@@ -137,15 +137,15 @@ data = data || {};
             "text": params.description
         }).appendTo(wrapper);
 
-	    wrapper.draggable({
+        wrapper.draggable({
             start: function() {
                 $("#" + defaults.deleteDiv).show();
             },
             stop: function() {
                 $("#" + defaults.deleteDiv).hide();
             },
-	        revert: "invalid",
-	        revertDuration : 200
+            revert: "invalid",
+            revertDuration : 200
         });
 
     };
@@ -217,7 +217,7 @@ data = data || {};
             }
         };
 
-	    responseDialog.dialog({
+        responseDialog.dialog({
             autoOpen: true,
             width: 400,
             modal: true,
