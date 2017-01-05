@@ -1,0 +1,15 @@
+{
+	"name": "To-Do List",
+	"description": "A Simple To-Do List New-tab Page for Multitaskers",
+	"version": "1.0.0",
+	"manifest_version": 2,
+	"permissions": [
+		"storage"
+	],
+	"icons": {
+		"128": "icon_128.png"
+	},
+	"chrome_url_overrides" : { 
+		"newtab": "index.html"
+	}
+}
