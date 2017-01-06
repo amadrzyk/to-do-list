@@ -10,13 +10,25 @@ User data is extracted from local storage and saved in variable todo.data
 Otherwise, comments are provided at appropriate places
 */
 
+// chrome = {
+//     storage: {
+//         sync: {
+//             get: function(){},
+//             set: function(){}
+//         }
+//     }
+// };
+
+// GET PREVIOUSLY SAVED DATA
 var todo = todo || {},
-    data = JSON.parse(localStorage.getItem("todoData"));
+    data = data || {};
 
-data = data || {};
+var loadData = function(savedData, jQuery) {
 
-(function(todo, data, $) {
+    // todo.data is where all the data is stored
+    // todo is the all-encompassing object
 
+    // Simple declaration
     var defaults = {
             todoTask: "todo-task",
             todoHeader: "task-header",
@@ -32,82 +44,15 @@ data = data || {};
             "3" : "#completed"
         };
 
-    todo.init = function (options) {
+    if (savedData !== undefined){
+        data = JSON.parse(savedData);
+    } else {
+        data = {};
+    }
 
-        options = options || {};
-        options = $.extend({}, defaults, options);
+    console.log("the saved data is:" + JSON.stringify(data));
 
-        $.each(data, function (index, params) {
-            generateElement(params);
-        });
-
-        /*generateElement({
-            id: "123",
-            code: "1",
-            title: "asd",
-            date: "22/12/2013",
-            description: "Blah Blah"
-        });*/
-
-        /*removeElement({
-            id: "123",
-            code: "1",
-            title: "asd",
-            date: "22/12/2013",
-            description: "Blah Blah"
-        });*/
-
-        // Adding drop function to each category of task
-        $.each(codes, function (index, value) {
-            $(value).droppable({
-                drop: function (event, ui) {
-                        var element = ui.helper,
-                            css_id = element.attr("id"),
-                            id = css_id.replace(options.taskId, ""),
-                            object = data[id];
-
-                            // Removing old element
-                            removeElement(object);
-
-                            // Changing object code
-                            object.code = index;
-
-                            // Generating new element
-                            generateElement(object);
-
-                            // Updating Local Storage
-                            data[id] = object;
-                            localStorage.setItem("todoData", JSON.stringify(data));
-
-                            // Hiding Delete Area
-                            $("#" + defaults.deleteDiv).hide();
-                    }
-            });
-        });
-
-        // Adding drop function to delete div
-        $("#" + options.deleteDiv).droppable({
-            drop: function(event, ui) {
-                var element = ui.helper,
-                    css_id = element.attr("id"),
-                    id = css_id.replace(options.taskId, ""),
-                    object = data[id];
-
-                // Removing old element
-                removeElement(object);
-
-                // Updating local storage
-                delete data[id];
-                localStorage.setItem("todoData", JSON.stringify(data));
-
-                // Hiding Delete Area
-                $("#" + defaults.deleteDiv).hide();
-            }
-        })
-
-    };
-
-    // Add Task
+    // Takes an element, and displays it on the screen
     var generateElement = function(params){
         var parent = $(codes[params.code]),
             wrapper;
@@ -137,6 +82,7 @@ data = data || {};
             "text": params.description
         }).appendTo(wrapper);
 
+        // Lets you drag an item around
         wrapper.draggable({
             start: function() {
                 $("#" + defaults.deleteDiv).show();
@@ -147,14 +93,100 @@ data = data || {};
             revert: "invalid",
             revertDuration : 200
         });
-
     };
+
+    // Todo is an object, so you can create a parameter for it
+    // Only a declaration though, does NOT run until called
+    var init = function (options) {
+
+        options = options || {};
+        options = $.extend({}, defaults, options);
+
+        // For each item in data, generate an item with its params?
+        $.each(data, function (index, params) {
+            generateElement(params);
+        });
+
+        /*generateElement({
+            id: "123",
+            code: "1",
+            title: "asd",
+            date: "22/12/2013",
+            description: "Blah Blah"
+        });*/
+
+        /*removeElement({
+            id: "123",
+            code: "1",
+            title: "asd",
+            date: "22/12/2013",
+            description: "Blah Blah"
+        });*/
+
+        // Adding drop function to each category of task
+        // For each item in codes (3 categories)
+        $.each(codes, function (index, value) {
+            $(value).droppable({
+                // Called when something is picked up and moved
+                drop: function (event, ui) {
+                        var element = ui.helper,
+                            css_id = element.attr("id"),
+                            id = css_id.replace(options.taskId, ""),
+                            object = data[id];
+
+                            // Removing old element
+                            removeElement(object);
+
+                            // Changing object code
+                            object.code = index;
+
+                            // Generating new element
+                            generateElement(object);
+
+                            // Updating Local Storage
+                            data[id] = object;
+                            chrome.storage.sync.set({"todoData": JSON.stringify(data)}, function() {
+                                console.log("Updating local storage in init droppable");
+                            });
+
+                            // Hiding Delete Area
+                            $("#" + defaults.deleteDiv).hide();
+                    }
+            });
+        });
+
+        // Adding drop function to delete div
+        $("#" + options.deleteDiv).droppable({
+            // Called when something is dropped in delete section
+            drop: function(event, ui) {
+                var element = ui.helper,
+                    css_id = element.attr("id"),
+                    id = css_id.replace(options.taskId, ""),
+                    object = data[id];
+
+                // Removing old element
+                removeElement(object);
+
+                // Updating local storage
+                delete data[id];
+                chrome.storage.sync.set({"todoData": JSON.stringify(data)}, function(){
+                    console.log("Updating local storage in init droppable deleted");
+                });
+
+                // Hiding Delete Area
+                $("#" + defaults.deleteDiv).hide();
+            }
+        });
+    };
+    init();
 
     // Remove task
     var removeElement = function (params) {
         $("#" + defaults.taskId + params.id).remove();
     };
 
+    // Also just declared here, doesn't run until you call it
+    // This is the add function for a SINGLE ADD
     todo.add = function() {
         var inputs = $("#" + defaults.formId + " :input"),
             errorMessage = "Title can not be empty",
@@ -164,15 +196,17 @@ data = data || {};
             return;
         }
 
-        title = inputs[0].value;
-        description = inputs[1].value;
-        date = inputs[2].value;
+        title =         inputs[0].value;
+        description =   inputs[1].value;
+        date =          inputs[2].value;
 
+        // If no title
         if (!title) {
             generateDialog(errorMessage);
             return;
         }
 
+        // Smart way of creating a unique ID
         id = new Date().getTime();
 
         tempData = {
@@ -185,9 +219,12 @@ data = data || {};
 
         // Saving element in local storage
         data[id] = tempData;
-        localStorage.setItem("todoData", JSON.stringify(data));
+        chrome.storage.sync.set({"todoData": JSON.stringify(data)}, function(){
+            console.log("Added + Saved new element in storage");
+            console.log(JSON.stringify(data));
+        });
 
-        // Generate Todo Element
+        // Generate Todo Element (Place it on screen)
         generateElement(tempData);
 
         // Reset Form
@@ -196,6 +233,7 @@ data = data || {};
         inputs[2].value = "";
     };
 
+    // Just a function to generate the "invalid title" dialog
     var generateDialog = function (message) {
         var responseId = "response-dialog",
             title = "Messaage",
@@ -226,10 +264,33 @@ data = data || {};
         });
     };
 
+    // Clears all the todo's by resetting the data variable to {}
     todo.clear = function () {
         data = {};
-        localStorage.setItem("todoData", JSON.stringify(data));
-        $("." + defaults.todoTask).remove();
+        chrome.storage.sync.set({"todoData": JSON.stringify(data)}, function(){
+            console.log("Cleared all todo's");
+        });
+        $("." + defaults.todoTask).remove(); // Useful jQuery code remover command
     };
 
-})(todo, data, jQuery);
+    // Event listeners
+    $("#addBtn").on("click", function(){
+        todo.add();
+    });
+    $("#clearBtn").on("click", function(){
+        todo.clear();
+    });
+};
+
+// This should load the data into 'data' variable, if it exists
+var getData = function(callback){
+    var tempData = {};
+    chrome.storage.sync.get("todoData", function(val){
+        console.log("Loaded data! " + val.todoData);
+        tempData = val.todoData;
+        callback(tempData);
+    });
+};
+
+// Call the previous two functions
+getData(loadData);

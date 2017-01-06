@@ -11,5 +11,9 @@
 	},
 	"chrome_url_overrides" : { 
 		"newtab": "index.html"
-	}
+	}, 
+	"content_scripts": [{
+		"js": ["assets/todo.js", "assets/init.js"],
+		"matches": ["<all_urls>"]
+	}]
 }
