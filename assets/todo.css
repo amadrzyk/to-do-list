@@ -1,11 +1,18 @@
+
+/* ============================================== ORIGINAL CSS STYLING ============================================== */
+
 /* nanoscrollbar */
 .nano .pane   { background: #888; }
 .nano .slider { background: #111; }
 
 body {
     /* Override bootstrap properties */
-    background-color: #374a5d !important;
-    border: 0 !important;
+    background-color: #80B1EB !important;
+    border: 0!important;
+    height: 100%;
+}
+form {
+    margin: 0;
 }
 
 #container{
@@ -19,18 +26,26 @@ body {
 #header{
     font-size: 30px;
     text-align: center;
-    margin-bottom: 15px;
+    margin: 13px 0 30px 0;
     color: #fff;
+    font-weight: bold;
+}
+
+.taskHeader{
+    padding-bottom: 13px;
+    border-bottom: 2px solid #e3e3e3;
 }
 
 .task-list{
     width: 250px;
+    height: 255px;
     float: left;
     margin: 0 5px;
-    background-color: #e3e3e3;
+    background-color: #fff; /*#e3e3e3*/
     min-height: 240px;
     border-radius: 10px;
     padding-bottom: 15px;
+    overflow: auto;  /* Scroll items rather than pushing div down */
 }
 
 .task-list input, .task-list textarea{
@@ -43,11 +58,12 @@ body {
 }
 
 .todo-task{
-    border-radius: 5px;
+/*    border-radius: 5px;*/    
     background-color: #fff;
-    width: 230px;
-    margin: 5px;
-    padding: 5px;
+    width: 100%;
+    margin: 5px 0 5px 0;
+    padding: 5px 0 5px 0;
+    border-bottom: 1px solid #e3e3e3;
 }
 
 .task-list input[type="button"]{
@@ -57,16 +73,22 @@ body {
 }
 
 .todo-task > .task-header{
-    font-weight: bold;
+    font-weight: bold;    
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .todo-task > .task-date{
     font-size: small;
     font-style: italic;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .todo-task > .task-description{
     font-size: smaller;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 h3{

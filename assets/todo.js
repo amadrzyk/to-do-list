@@ -90,8 +90,13 @@ var loadData = function(savedData, jQuery) {
             stop: function() {
                 $("#" + defaults.deleteDiv).hide();
             },
+            scroll: false,
             revert: "invalid",
             revertDuration : 200
+        });
+
+        wrapper.sortable({
+            revert: true
         });
     };
 
@@ -278,7 +283,9 @@ var loadData = function(savedData, jQuery) {
         todo.add();
     });
     $("#clearBtn").on("click", function(){
-        todo.clear();
+        if (confirm("Are you sure?")){
+            todo.clear();
+        }
     });
 };
 
