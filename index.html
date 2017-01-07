@@ -13,10 +13,16 @@
     <body class="well">
         <div id="container">
 
-            <div id="header">To Do List</div>
+            <div class="colorPicker">
+                BG: <a href="#" id="bgColor">#80B1EB</a>
+            </div>
+            <div class="paneShadow">
+                SHADOW: <a href="#" id="shadowColor">#0199D9</a>
+            </div>
+            <div class="header">To Do List.</div>
             
-            <div class="row shadow-section" style="background: #80B1EB; margin-left: 8.5%" data-size="35" data-fade="1" data-opacity="0.3" data-placement="right-bottom">
-                <div class="task-list task-container shadow-object" id="pending">
+            <div class="row" style="margin-left: 8.5%" data-size="35" data-fade="1" data-opacity="0.3" data-placement="right-bottom">
+                <div class="task-list task-container shadow-object long-shadow" id="pending">
                     <h3 class="tasklistHeaderH3">
                         <a class="taskHeader" href="#" id="taskHeader1">New Name</a>
                     </h3>
@@ -27,20 +33,20 @@
                     </div>-->
                 </div>
 
-                <div class="task-list task-container shadow-object" id="inProgress">
+                <div class="task-list task-container shadow-object long-shadow" id="inProgress">
                     <h3 class="tasklistHeaderH3">
                         <a class="taskHeader" href="#" id="taskHeader2">New Name</a>
                     </h3>
                 </div>
 
-                <div class="task-list task-container shadow-object" id="completed">
+                <div class="task-list task-container shadow-object long-shadow" id="completed">
                     <h3 class="tasklistHeaderH3">
                         <a class="taskHeader" href="#" id="taskHeader3">New Name</a>
                     </h3>
                 </div>
 
-                <div class="task-list formList shadow-object">
-                    <h3>Add a task</h3>
+                <div class="task-list formList shadow-object long-shadow">
+                    <h3 class="tasklistHeaderH3">Add a task</h3>
                     <form id="todo-form">
                         <input type="text" placeholder="Title" />
                         <textarea placeholder="Description"></textarea>
@@ -56,16 +62,16 @@
                 </div>
                 <div style="clear:both;"></div>
             </div>
-
-            <script src="lib/jQuery/jquery.min.js"      ></script>
-            <script src="lib/Bootstrap3/bootstrap.min.js"></script>
-            <script src="lib/jQuery/jquery.ui.min.js"   ></script>
-            <script src="assets/todo.js"                ></script>
-            <script src="assets/init.js"                ></script>
-            <script src="lib/Bootstrap/bootstrap-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>
-            <script src="lib/jQuery/jQuery-xcolor-master/jquery.xcolor.min.js"></script>
-            <script src="lib/jQuery/jQuery-shadows/dynamic_shadow_color.min.js"></script>
-            <script src="lib/jQuery/jQuery-shadows/plugins.js"></script>
         </div>
+
+        <script src="lib/jQuery/jquery.min.js"      ></script>
+        <script src="lib/Bootstrap3/bootstrap.min.js"></script>
+        <script src="lib/jQuery/jquery.ui.min.js"   ></script>
+        <script src="assets/todo.js"                ></script>
+        <script src="assets/init.js"                ></script>
+        <script src="lib/Bootstrap/bootstrap-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>
+        <script src="lib/jQuery/jQuery-xcolor-master/jquery.xcolor.min.js"></script>
+        <script src="lib/jQuery/jQuery-shadows/dynamic_shadow_color.min.js"></script>
+        <script src="lib/jQuery/jQuery-shadows/plugins.js"></script>
     </body>
 </html>

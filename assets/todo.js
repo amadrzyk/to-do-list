@@ -23,7 +23,7 @@ Otherwise, comments are provided at appropriate places
 var todo = todo || {},
     data = data || {};
 
-var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, jQuery) {
+var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, newColor, newShadow, jQuery) {
 
     // todo.data is where all the data is stored
     // todo is the all-encompassing object
@@ -276,6 +276,15 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, jQu
         $("." + defaults.todoTask).remove(); // Useful jQuery code remover command
     };
 
+    var changeShadow = function(newClr){
+        var newShadowParams = "";
+        for (var i = 3; i < 20; i++){
+            newShadowParams += i+"px "+i+"px "+"0 "+newClr+", ";
+        }
+        newShadowParams += "20px 20px 0 "+newClr;
+        $(".long-shadow ").css("box-shadow", newShadowParams);
+    };
+
     // Event listeners
     $("#addBtn").on("click", function(){
         todo.add();
@@ -294,8 +303,16 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, jQu
         type: 'text',
         title: 'Enter name'
     });
+    $('#bgColor').editable({
+        type: 'text',
+        title: 'Enter color'
+    });
+    $('#shadowColor').editable({
+        type: 'text',
+        title: 'Enter color'
+    });
 
-    // On change, save value to memory
+    // On headerName change, save value to memory
     $('.taskHeader').on('save', function(event, params) {
         console.log('Saved value: ' + params.newValue);
         var clickedId = event.target.id;
@@ -307,20 +324,46 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, jQu
         });
     });
 
+    // On bg color change, save value to memory
+    $('#bgColor').on('save', function(event, params) {
+        console.log('Saved color value: ' + params.newValue);
+        chrome.storage.sync.set({"bgColor1": params.newValue}, function(){
+            console.log("Set color to " + params.newValue);
+        });
+        $('.well').css("background-color", params.newValue);
+        $('.row').css("background-color", params.newValue);
+    });
+
+    // On shadowColor color change, save value to memory
+    $('#shadowColor').on('save', function(event, params) {
+        console.log('Saved shadow value: ' + params.newValue);
+        chrome.storage.sync.set({"shadowColor": params.newValue}, function(){
+            console.log("Set shadow to " + params.newValue);
+        });
+        changeShadow(params.newValue);
+    });
+
     // Load saved headers into their respective places
     $('#taskHeader1').html(savedHeader1);
     $('#taskHeader2').html(savedHeader2);
     $('#taskHeader3').html(savedHeader3);
+    $('.well').css("background-color", newColor);
+    $('.row').css("background-color", newColor);
+    $('#bgColor').html(newColor);
+    $('#shadowColor').html(newShadow);
+    changeShadow(newShadow);
 };
 
 // This should load the data into 'data' variable, if it exists
 var getData = function(callback){
-    chrome.storage.sync.get(["todoData", "taskHeader1", "taskHeader2", "taskHeader3"], function(val){
+    chrome.storage.sync.get(["todoData", "taskHeader1", "taskHeader2", "taskHeader3", "bgColor1", "shadowColor"], function(val){
         console.log("Loaded data! ");
         console.log("Loaded taskHeader1! " + val.taskHeader1);
         console.log("Loaded taskHeader2! " + val.taskHeader2);
         console.log("Loaded taskHeader3! " + val.taskHeader3);
-        callback(val.todoData, val.taskHeader1, val.taskHeader2, val.taskHeader3);
+        console.log("Loaded bgColor! " + val.bgColor1);
+        console.log("Loaded shadowColor! " + val.shadowColor);
+        callback(val.todoData, val.taskHeader1, val.taskHeader2, val.taskHeader3, val.bgColor1, val.shadowColor);
     });
 };
 

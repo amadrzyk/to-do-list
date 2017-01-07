@@ -1,0 +1,1 @@
+<div class="flatty_shadow" data-bg-color="#f65034" data-shadow-color="#df3619" data-icon-color="#ffffff" data-angle="42" data-depth="60" data-shape="50" data-bg-transparency="1" data-shadow-transparency="1" data-icon-transparency="1" data-pos-x="0" data-pos-y="0" data-bg-size="130" data-icon-size="60"><i class="fa fa-paper-plane"></i></div>

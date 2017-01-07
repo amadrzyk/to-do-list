@@ -10,7 +10,6 @@
 
 body {
     /* Override bootstrap properties */
-    background-color: #80B1EB !important;
     border: 0!important;
     height: 100%;
     z-index: 0!important;
@@ -18,21 +17,47 @@ body {
 form {
     margin: 0;
 }
-
+.well{
+    background-color: #80B1EB;
+}
 #container{
     margin: 0 auto;
     width: 100%;
-    min-height: 100%;
+    /*min-height: 100%;*/
     background-color: transparent;
     border: 0;
+    float: left;
 }
 
-#header{
-    font-size: 30px;
-    text-align: center;
-    margin: 13px 0 30px 0;
+.header{
+    font-size: 50px;
+    text-align: left;
     color: #fff;
     font-weight: bold;
+    margin: 0 0 30px 8.9%
+}
+
+.colorPicker {
+    font-size: 12px;
+    /*margin: 20px 0 0 0;*/
+    color: #fff;
+    text-align: right;
+ /*   float: left;
+    display:block;
+    width: 100%;*/
+    /*margin-bottom: -10px;*/
+    margin-right: 5px;
+}
+.paneShadow {
+    font-size: 12px;
+    /*margin: 20px 0 0 0;*/
+    color: #fff;
+    text-align: right;
+ /*   float: left;
+    display:block;
+    width: 100%;*/
+    margin-bottom: -25px;
+    margin-right: 5px;
 }
 
 .tasklistHeaderH3{
@@ -66,14 +91,18 @@ form {
     background-color: #fff;
     width: 100%;
     margin: 5px 0 5px 0;
-    padding: 5px 0 5px 0;
+    padding: 5px 0 10px 0;
     border-bottom: 1px solid #e3e3e3;
 }
 
-.task-list input[type="button"]{
+/*input[type="button"]*/ #addBtn{
     width: 100px;
-    margin: 5px;
+    margin: 14px 5px 5px 5px;
+}
 
+#clearBtn {
+    width: 100px;
+    margin: 5px 5px 0 5px;
 }
 
 .todo-task > .task-header{
@@ -126,7 +155,41 @@ h3{
     color: #555;
 }
 
-textarea {
-    border-color: #BFBFBF;
+textarea, input {
+    border-style: solid;
+    border-color: #BFBFBF; /*6B6B6B; */
     border-width: 0.1px;
+}
+
+.long-shadow {
+  display: inline-block;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  text-align: center;
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  box-shadow: 
+      3px 3px 0 #0199d9 , 
+      4px 4px 0 #0199d9 , 
+      5px 5px 0 #0199d9 , 
+      6px 6px 0 #0199d9 , 
+      7px 7px 0 #0199d9 , 
+      8px 8px 0 #0199d9 , 
+      9px 9px 0 #0199d9 , 
+      10px 10px 0 #0199d9 , 
+      11px 11px 0 #0199d9 , 
+      12px 12px 0 #0199d9 , 
+      13px 13px 0 #0199d9 , 
+      14px 14px 0 #0199d9 , 
+      15px 15px 0 #0199d9 , 
+      16px 16px 0 #0199d9 , 
+      17px 17px 0 #0199d9 , 
+      18px 18px 0 #0199d9 , 
+      19px 19px 0 #0199d9 , 
+      20px 20px 0 #0199d9 ;
+}
+
+.ui-draggable-dragging {
+    z-index: 999999!important;
 }
