@@ -23,7 +23,7 @@ Otherwise, comments are provided at appropriate places
 var todo = todo || {},
     data = data || {};
 
-var loadData = function(savedData, jQuery) {
+var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, jQuery) {
 
     // todo.data is where all the data is stored
     // todo is the all-encompassing object
@@ -50,8 +50,6 @@ var loadData = function(savedData, jQuery) {
         data = {};
     }
 
-    console.log("the saved data is:" + JSON.stringify(data));
-
     // Takes an element, and displays it on the screen
     var generateElement = function(params){
         var parent = $(codes[params.code]),
@@ -59,6 +57,10 @@ var loadData = function(savedData, jQuery) {
 
         if (!parent) {
             return;
+        }
+        var dueBy = "Due by: ";
+        if (params.date === ""){
+            dueBy = "";
         }
 
         wrapper = $("<div />", {
@@ -74,7 +76,7 @@ var loadData = function(savedData, jQuery) {
 
         $("<div />", {
             "class" : defaults.todoDate,
-            "text": params.date
+            "text": dueBy + params.date
         }).appendTo(wrapper);
 
         $("<div />", {
@@ -94,10 +96,6 @@ var loadData = function(savedData, jQuery) {
             revert: "invalid",
             revertDuration : 200
         });
-
-        wrapper.sortable({
-            revert: true
-        });
     };
 
     // Todo is an object, so you can create a parameter for it
@@ -107,7 +105,7 @@ var loadData = function(savedData, jQuery) {
         options = options || {};
         options = $.extend({}, defaults, options);
 
-        // For each item in data, generate an item with its params?
+        // For each index, generate
         $.each(data, function (index, params) {
             generateElement(params);
         });
@@ -132,7 +130,7 @@ var loadData = function(savedData, jQuery) {
         // For each item in codes (3 categories)
         $.each(codes, function (index, value) {
             $(value).droppable({
-                // Called when something is picked up and moved
+                // Called when something is dropped
                 drop: function (event, ui) {
                         var element = ui.helper,
                             css_id = element.attr("id"),
@@ -287,15 +285,42 @@ var loadData = function(savedData, jQuery) {
             todo.clear();
         }
     });
+
+    // Make tasklist headers' popup window inline
+    $.fn.editable.defaults.mode = 'inline';
+
+    // Make task header editable
+    $('.taskHeader').editable({
+        type: 'text',
+        title: 'Enter name'
+    });
+
+    // On change, save value to memory
+    $('.taskHeader').on('save', function(event, params) {
+        console.log('Saved value: ' + params.newValue);
+        var clickedId = event.target.id;
+        console.log("clickedId was: " + clickedId);
+        var newObj = {};
+        newObj[clickedId] = params.newValue; // We have to do this, to pass clickedId as a key into the object
+        chrome.storage.sync.set(newObj, function(){
+            console.log("Set id: " + clickedId + " to " + params.newValue);
+        });
+    });
+
+    // Load saved headers into their respective places
+    $('#taskHeader1').html(savedHeader1);
+    $('#taskHeader2').html(savedHeader2);
+    $('#taskHeader3').html(savedHeader3);
 };
 
 // This should load the data into 'data' variable, if it exists
 var getData = function(callback){
-    var tempData = {};
-    chrome.storage.sync.get("todoData", function(val){
-        console.log("Loaded data! " + val.todoData);
-        tempData = val.todoData;
-        callback(tempData);
+    chrome.storage.sync.get(["todoData", "taskHeader1", "taskHeader2", "taskHeader3"], function(val){
+        console.log("Loaded data! ");
+        console.log("Loaded taskHeader1! " + val.taskHeader1);
+        console.log("Loaded taskHeader2! " + val.taskHeader2);
+        console.log("Loaded taskHeader3! " + val.taskHeader3);
+        callback(val.todoData, val.taskHeader1, val.taskHeader2, val.taskHeader3);
     });
 };
 

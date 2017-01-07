@@ -1,6 +1,9 @@
 
 /* ============================================== ORIGINAL CSS STYLING ============================================== */
 
+/* Bootstrap glyphicons */
+@import url("http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css");
+
 /* nanoscrollbar */
 .nano .pane   { background: #888; }
 .nano .slider { background: #111; }
@@ -10,6 +13,7 @@ body {
     background-color: #80B1EB !important;
     border: 0!important;
     height: 100%;
+    z-index: 0!important;
 }
 form {
     margin: 0;
@@ -17,7 +21,7 @@ form {
 
 #container{
     margin: 0 auto;
-    width: 1060px;
+    width: 100%;
     min-height: 100%;
     background-color: transparent;
     border: 0;
@@ -31,21 +35,21 @@ form {
     font-weight: bold;
 }
 
-.taskHeader{
+.tasklistHeaderH3{
     padding-bottom: 13px;
     border-bottom: 2px solid #e3e3e3;
 }
 
 .task-list{
     width: 250px;
-    height: 255px;
+    /*height: 255px;*/
     float: left;
     margin: 0 5px;
     background-color: #fff; /*#e3e3e3*/
     min-height: 240px;
     border-radius: 10px;
     padding-bottom: 15px;
-    overflow: auto;  /* Scroll items rather than pushing div down */
+    /*overflow: auto;   Scroll items rather than pushing div down*/
 }
 
 .task-list input, .task-list textarea{
@@ -73,13 +77,13 @@ form {
 }
 
 .todo-task > .task-header{
-    font-weight: bold;    
+    font-weight: bold;
     margin-left: 5px;
     margin-right: 5px;
 }
 
 .todo-task > .task-date{
-    font-size: small;
+    font-size: 10px;
     font-style: italic;
     margin-left: 5px;
     margin-right: 5px;
@@ -103,4 +107,26 @@ h3{
     height: 75px;
     line-height: 75px;
     text-align: center;
+}
+
+.editableform .form-control {
+    width: 150px!important;
+}
+
+.editable-submit, .editable-cancel{
+    padding: 5px!important;
+    margin-top:2.5px;
+}
+
+.taskHeader  {
+    color: #000;
+}
+
+.taskHeader:hover {
+    color: #555;
+}
+
+textarea {
+    border-color: #BFBFBF;
+    border-width: 0.1px;
 }

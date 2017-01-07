@@ -3,55 +3,69 @@
         <title>To-Do List</title>
         <link rel="icon" type="image/png" href="./icon_128.png" sizes="128x128">
 
-        <link rel="stylesheet" href="lib/Bootstrap/bootstrap.min.css" />
+        <link rel="stylesheet" href="lib/Bootstrap3/bootstrap.min.css" />
         <link rel="stylesheet" href="lib/jQuery/jquery.ui.min.css" />
         <link rel="stylesheet" href="assets/todo.css" />
+
+        <link href="lib/Bootstrap/bootstrap-editable/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">
     </head>
 
     <body class="well">
         <div id="container">
 
             <div id="header">To Do List</div>
-
-            <div class="task-list task-container" id="pending">
-                <h3 class="taskHeader">Pending</h3>
-                <!--<div class="to-do-task">
-                    <div class="task-header">Sample Header</div>
-                    <div class="task-date">25/06/1992</div>
-                    <div class="task-description">Lorem Ipsum Dolor Sit Amet</div>
-                </div>-->
-            </div>
-
-            <div class="task-list task-container" id="inProgress">
-                <h3 class="taskHeader">In Progress</h3>
-            </div>
-
-            <div class="task-list task-container" id="completed">
-                <h3 class="taskHeader">Completed</h3>
-            </div>
-
-            <div class="task-list formList">
-                <h3>Add a task</h3>
-                <form id="todo-form">
-                    <input type="text" placeholder="Title" />
-                    <textarea placeholder="Description"></textarea>
-                    <input type="text" id="datepicker" placeholder="Due Date (dd/mm/yyyy)" />
-                    <input id="addBtn" type="button" class="btn btn-primary" value="Add Task" />
-                </form>
-
-                <input id="clearBtn" type="button" class="btn btn-primary" value="Clear Data" />
-
-                <div id="delete-div">
-                    Drag Here to Delete
+            
+            <div class="row shadow-section" style="background: #80B1EB; margin-left: 8.5%" data-size="35" data-fade="1" data-opacity="0.3" data-placement="right-bottom">
+                <div class="task-list task-container shadow-object" id="pending">
+                    <h3 class="tasklistHeaderH3">
+                        <a class="taskHeader" href="#" id="taskHeader1">New Name</a>
+                    </h3>
+                    <!--<div class="to-do-task">
+                        <div class="task-header">Sample Header</div>
+                        <div class="task-date">25/06/1992</div>
+                        <div class="task-description">Lorem Ipsum Dolor Sit Amet</div>
+                    </div>-->
                 </div>
+
+                <div class="task-list task-container shadow-object" id="inProgress">
+                    <h3 class="tasklistHeaderH3">
+                        <a class="taskHeader" href="#" id="taskHeader2">New Name</a>
+                    </h3>
+                </div>
+
+                <div class="task-list task-container shadow-object" id="completed">
+                    <h3 class="tasklistHeaderH3">
+                        <a class="taskHeader" href="#" id="taskHeader3">New Name</a>
+                    </h3>
+                </div>
+
+                <div class="task-list formList shadow-object">
+                    <h3>Add a task</h3>
+                    <form id="todo-form">
+                        <input type="text" placeholder="Title" />
+                        <textarea placeholder="Description"></textarea>
+                        <input type="text" id="datepicker" placeholder="Due Date (dd/mm/yyyy)" />
+                        <input id="addBtn" type="button" class="btn btn-primary" value="Add Task" />
+                    </form>
+
+                    <input id="clearBtn" type="button" class="btn btn-primary" value="Clear Data" />
+
+                    <div id="delete-div">
+                        Drag Here to Delete
+                    </div>
+                </div>
+                <div style="clear:both;"></div>
             </div>
 
-            <div style="clear:both;"></div>
-	          <script type="text/javascript" src="lib/jQuery/jquery.min.js"></script>
-            <script type="text/javascript" src="lib/Bootstrap/bootstrap.min.js"></script>
-            <script type="text/javascript" src="lib/jQuery/jquery.ui.min.js"></script>
-            <script type="text/javascript" src="assets/todo.js"></script>
-            <script type="text/javascript" src="assets/init.js"></script>
+            <script src="lib/jQuery/jquery.min.js"      ></script>
+            <script src="lib/Bootstrap3/bootstrap.min.js"></script>
+            <script src="lib/jQuery/jquery.ui.min.js"   ></script>
+            <script src="assets/todo.js"                ></script>
+            <script src="assets/init.js"                ></script>
+            <script src="lib/Bootstrap/bootstrap-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>
+            <script src="lib/jQuery/jQuery-xcolor-master/jquery.xcolor.min.js"></script>
+            <script src="lib/jQuery/jQuery-shadows/dynamic_shadow_color.min.js"></script>
+            <script src="lib/jQuery/jQuery-shadows/plugins.js"></script>
         </div>
     </body>
 </html>
