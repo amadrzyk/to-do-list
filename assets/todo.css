@@ -56,12 +56,25 @@ form {
  /*   float: left;
     display:block;
     width: 100%;*/
+    /*margin-bottom: -25px;*/
+    margin-right: 5px;
+}
+
+.shortShadow {
+      font-size: 12px;
+    /*margin: 20px 0 0 0;*/
+    color: #fff;
+    text-align: right;
+ /*   float: left;
+    display:block;
+    width: 100%;*/
     margin-bottom: -25px;
     margin-right: 5px;
 }
 
 .tasklistHeaderH3{
     padding-bottom: 13px;
+    margin-bottom: 0;
     border-bottom: 2px solid #e3e3e3;
 }
 
@@ -90,8 +103,8 @@ form {
 /*    border-radius: 5px;*/    
     background-color: #fff;
     width: 100%;
-    margin: 5px 0 5px 0;
-    padding: 5px 0 10px 0;
+/*    margin: 5px 0 5px 0;*/    
+    padding: 15px 0 15px 0;
     border-bottom: 1px solid #e3e3e3;
 }
 
@@ -156,7 +169,7 @@ h3{
 }
 
 textarea, input {
-    border-style: solid;
+    border-style: none;
     border-color: #BFBFBF; /*6B6B6B; */
     border-width: 0.1px;
 }
@@ -170,7 +183,7 @@ textarea, input {
   -o-text-overflow: clip;
   text-overflow: clip;
   box-shadow: 
-      3px 3px 0 #0199d9 , 
+      3px 3px 0 #0199d9 ,
       4px 4px 0 #0199d9 , 
       5px 5px 0 #0199d9 , 
       6px 6px 0 #0199d9 , 
@@ -188,6 +201,18 @@ textarea, input {
       18px 18px 0 #0199d9 , 
       19px 19px 0 #0199d9 , 
       20px 20px 0 #0199d9 ;
+}
+
+.short-shadow {
+  display: inline-block;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  text-align: center;
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  box-shadow: 
+      3px 3px 0 rgba(62,62,59,0.5)!important;
 }
 
 .ui-draggable-dragging {

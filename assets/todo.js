@@ -19,16 +19,15 @@ Otherwise, comments are provided at appropriate places
 //     }
 // };
 
-// GET PREVIOUSLY SAVED DATA
 var todo = todo || {},
     data = data || {};
 
-var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, newColor, newShadow, jQuery) {
+var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, newColor, newShadow, shadowChecked, jQuery) {
 
     // todo.data is where all the data is stored
     // todo is the all-encompassing object
 
-    // Simple declaration
+    // Defaults declaration
     var defaults = {
             todoTask: "todo-task",
             todoHeader: "task-header",
@@ -50,7 +49,7 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
         data = {};
     }
 
-    // Takes an element, and displays it on the screen
+    // Takes a single element, and displays it on the screen
     var generateElement = function(params){
         var parent = $(codes[params.code]),
             wrapper;
@@ -98,8 +97,7 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
         });
     };
 
-    // Todo is an object, so you can create a parameter for it
-    // Only a declaration though, does NOT run until called
+    // Initialize (and show) every element on the screen
     var init = function (options) {
 
         options = options || {};
@@ -183,13 +181,12 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
     };
     init();
 
-    // Remove task
+    // Remove task from list
     var removeElement = function (params) {
         $("#" + defaults.taskId + params.id).remove();
     };
 
-    // Also just declared here, doesn't run until you call it
-    // This is the add function for a SINGLE ADD
+    // This is the add function for a single add
     todo.add = function() {
         var inputs = $("#" + defaults.formId + " :input"),
             errorMessage = "Title can not be empty",
@@ -236,7 +233,7 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
         inputs[2].value = "";
     };
 
-    // Just a function to generate the "invalid title" dialog
+    // Just a function to generate the "invalid title" dialog modal
     var generateDialog = function (message) {
         var responseId = "response-dialog",
             title = "Messaage",
@@ -276,12 +273,14 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
         $("." + defaults.todoTask).remove(); // Useful jQuery code remover command
     };
 
+    // Changes shadow
     var changeShadow = function(newClr){
         var newShadowParams = "";
         for (var i = 3; i < 20; i++){
             newShadowParams += i+"px "+i+"px "+"0 "+newClr+", ";
         }
         newShadowParams += "20px 20px 0 "+newClr;
+
         $(".long-shadow ").css("box-shadow", newShadowParams);
     };
 
@@ -294,11 +293,24 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
             todo.clear();
         }
     });
+    $("#shortShadow").change(function(){
+        var checked;
+        if ($('input:checkbox').is(':checked')){
+            $(".task-list").removeClass("long-shadow").addClass("short-shadow");
+            checked=true;
+        } else {
+            $(".task-list").removeClass("short-shadow").addClass("long-shadow");
+            checked=false;
+        }
+        chrome.storage.sync.set({"shortShadow": checked}, function(){
+            console.log("Short shadow: " + checked);
+        });
+    });
 
-    // Make tasklist headers' popup window inline
+    // Make editables inline (default mode is popup)
     $.fn.editable.defaults.mode = 'inline';
 
-    // Make task header editable
+    // Make task headers and colors editable
     $('.taskHeader').editable({
         type: 'text',
         title: 'Enter name'
@@ -318,13 +330,13 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
         var clickedId = event.target.id;
         console.log("clickedId was: " + clickedId);
         var newObj = {};
-        newObj[clickedId] = params.newValue; // We have to do this, to pass clickedId as a key into the object
+        newObj[clickedId] = params.newValue; // We have to do this, to pass clickedId as a KEY into the object
         chrome.storage.sync.set(newObj, function(){
             console.log("Set id: " + clickedId + " to " + params.newValue);
         });
     });
 
-    // On bg color change, save value to memory
+    // On bg color change, save value to memory & update css
     $('#bgColor').on('save', function(event, params) {
         console.log('Saved color value: ' + params.newValue);
         chrome.storage.sync.set({"bgColor1": params.newValue}, function(){
@@ -334,7 +346,7 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
         $('.row').css("background-color", params.newValue);
     });
 
-    // On shadowColor color change, save value to memory
+    // On shadowColor color change, save value to memory & update css
     $('#shadowColor').on('save', function(event, params) {
         console.log('Saved shadow value: ' + params.newValue);
         chrome.storage.sync.set({"shadowColor": params.newValue}, function(){
@@ -343,7 +355,7 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
         changeShadow(params.newValue);
     });
 
-    // Load saved headers into their respective places
+    // Load saved items into their respective places
     $('#taskHeader1').html(savedHeader1);
     $('#taskHeader2').html(savedHeader2);
     $('#taskHeader3').html(savedHeader3);
@@ -352,18 +364,23 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
     $('#bgColor').html(newColor);
     $('#shadowColor').html(newShadow);
     changeShadow(newShadow);
+    $('#shortShadow').prop('checked', shadowChecked);
+    if (shadowChecked === true){
+        $(".task-list").removeClass("long-shadow").addClass("short-shadow");
+    }
 };
 
-// This should load the data into 'data' variable, if it exists
+// This will get the data if it exists, otherwise variables will be undefined
 var getData = function(callback){
-    chrome.storage.sync.get(["todoData", "taskHeader1", "taskHeader2", "taskHeader3", "bgColor1", "shadowColor"], function(val){
+    chrome.storage.sync.get(["todoData", "taskHeader1", "taskHeader2", "taskHeader3", "bgColor1", "shadowColor", "shortShadow"], function(val){
         console.log("Loaded data! ");
         console.log("Loaded taskHeader1! " + val.taskHeader1);
         console.log("Loaded taskHeader2! " + val.taskHeader2);
         console.log("Loaded taskHeader3! " + val.taskHeader3);
         console.log("Loaded bgColor! " + val.bgColor1);
         console.log("Loaded shadowColor! " + val.shadowColor);
-        callback(val.todoData, val.taskHeader1, val.taskHeader2, val.taskHeader3, val.bgColor1, val.shadowColor);
+        console.log("Loaded shordShadow! " + val.shortShadow);
+        callback(val.todoData, val.taskHeader1, val.taskHeader2, val.taskHeader3, val.bgColor1, val.shadowColor, val.shortShadow);
     });
 };
 

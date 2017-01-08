@@ -17,9 +17,12 @@
                 BG: <a href="#" id="bgColor">#80B1EB</a>
             </div>
             <div class="paneShadow">
-                SHADOW: <a href="#" id="shadowColor">#0199D9</a>
+                SHADOW COLOR: <a href="#" id="shadowColor">#0199D9</a>
             </div>
-            <div class="header">To Do List.</div>
+            <div class="shortShadow">
+                <span style="margin-right: 39px">SHORT SHADOW: </span><input type="checkbox" value="shortShadow" id="shortShadow" value="Shadow">
+            </div>
+            <div class="header">To-Do List.</div>
             
             <div class="row" style="margin-left: 8.5%" data-size="35" data-fade="1" data-opacity="0.3" data-placement="right-bottom">
                 <div class="task-list task-container shadow-object long-shadow" id="pending">
@@ -46,7 +49,7 @@
                 </div>
 
                 <div class="task-list formList shadow-object long-shadow">
-                    <h3 class="tasklistHeaderH3">Add a task</h3>
+                    <h3 class="tasklistHeaderH3" style="margin-bottom: 10px">Add a task</h3>
                     <form id="todo-form">
                         <input type="text" placeholder="Title" />
                         <textarea placeholder="Description"></textarea>
