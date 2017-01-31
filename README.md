@@ -1,1 +1,1 @@
-The todo list for the HackerEarth AngelPrime Challenge 
+A Javascript To-do List
