@@ -22,6 +22,9 @@ Otherwise, comments are provided at appropriate places
 var todo = todo || {},
     data = data || {};
 
+var DEBUG = false;
+var clickableDelete = false;
+
 var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, newColor, newShadow, shadowChecked, jQuery) {
 
     // todo.data is where all the data is stored
@@ -69,6 +72,21 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
         }).appendTo(parent);
 
         $("<div />", {
+            "id": "deleteDiv" + params.id,
+            "class": "deleteDiv",
+            "style" : "height: 14px"
+        }).appendTo(wrapper);
+
+        if (clickableDelete) {
+
+            $("<span />", {
+                "id": "deleteLink" + params.id,
+                "class": "deleteLink glyphicon glyphicon-remove",
+                "aria-hidden": "true"
+            }).appendTo("#deleteDiv" + params.id);
+        }
+
+        $("<div />", {
             "class" : defaults.todoHeader,
             "text": params.title
         }).appendTo(wrapper);
@@ -83,18 +101,20 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
             "text": params.description
         }).appendTo(wrapper);
 
-        // Lets you drag an item around
-        wrapper.draggable({
-            start: function() {
-                $("#" + defaults.deleteDiv).show();
-            },
-            stop: function() {
-                $("#" + defaults.deleteDiv).hide();
-            },
-            scroll: false,
-            revert: "invalid",
-            revertDuration : 200
-        });
+        if (!clickableDelete) {
+            // Lets you drag an item around
+            wrapper.draggable({
+                start: function () {
+                    $("#" + defaults.deleteDiv).show();
+                },
+                stop: function () {
+                    $("#" + defaults.deleteDiv).hide();
+                },
+                scroll: false,
+                revert: "invalid",
+                revertDuration: 200
+            });
+        }
     };
 
     // Initialize (and show) every element on the screen
@@ -147,7 +167,7 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
                             // Updating Local Storage
                             data[id] = object;
                             chrome.storage.sync.set({"todoData": JSON.stringify(data)}, function() {
-                                console.log("Updating local storage in init droppable");
+                                if(DEBUG) console.log("Updating local storage in init droppable");
                             });
 
                             // Hiding Delete Area
@@ -171,7 +191,7 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
                 // Updating local storage
                 delete data[id];
                 chrome.storage.sync.set({"todoData": JSON.stringify(data)}, function(){
-                    console.log("Updating local storage in init droppable deleted");
+                    if(DEBUG) console.log("Updating local storage in init droppable deleted");
                 });
 
                 // Hiding Delete Area
@@ -185,6 +205,20 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
     var removeElement = function (params) {
         $("#" + defaults.taskId + params.id).remove();
     };
+
+    $(document).on('click', '.deleteLink', function() {
+        var idClicked = event.target.id.replace("deleteLink", "");
+        alert(idClicked);
+
+        // Removing old element
+        $("#" + defaults.taskId + idClicked).remove();
+
+        // Updating local storage
+        delete data[idClicked];
+        chrome.storage.sync.set({"todoData": JSON.stringify(data)}, function(){
+            if(DEBUG) console.log("Updating local storage in init droppable deleted");
+        });
+    });
 
     // This is the add function for a single add
     todo.add = function() {
@@ -220,8 +254,10 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
         // Saving element in local storage
         data[id] = tempData;
         chrome.storage.sync.set({"todoData": JSON.stringify(data)}, function(){
-            console.log("Added + Saved new element in storage");
-            console.log(JSON.stringify(data));
+            if(DEBUG) {
+                console.log("Added + Saved new element in storage");
+                console.log(JSON.stringify(data));
+            }
         });
 
         // Generate Todo Element (Place it on screen)
@@ -268,7 +304,7 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
     todo.clear = function () {
         data = {};
         chrome.storage.sync.set({"todoData": JSON.stringify(data)}, function(){
-            console.log("Cleared all todo's");
+            if(DEBUG) console.log("Cleared all todo's");
         });
         $("." + defaults.todoTask).remove(); // Useful jQuery code remover command
     };
@@ -303,7 +339,7 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
             checked=false;
         }
         chrome.storage.sync.set({"shortShadow": checked}, function(){
-            console.log("Short shadow: " + checked);
+            if(DEBUG) console.log("Short shadow: " + checked);
         });
     });
 
@@ -326,21 +362,22 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
 
     // On headerName change, save value to memory
     $('.taskHeader').on('save', function(event, params) {
-        console.log('Saved value: ' + params.newValue);
+        if(DEBUG) console.log('Saved value: ' + params.newValue);
         var clickedId = event.target.id;
-        console.log("clickedId was: " + clickedId);
+
+        if(DEBUG) console.log("clickedId was: " + clickedId);
         var newObj = {};
         newObj[clickedId] = params.newValue; // We have to do this, to pass clickedId as a KEY into the object
         chrome.storage.sync.set(newObj, function(){
-            console.log("Set id: " + clickedId + " to " + params.newValue);
+            if(DEBUG) console.log("Set id: " + clickedId + " to " + params.newValue);
         });
     });
 
     // On bg color change, save value to memory & update css
     $('#bgColor').on('save', function(event, params) {
-        console.log('Saved color value: ' + params.newValue);
+        if(DEBUG) console.log('Saved color value: ' + params.newValue);
         chrome.storage.sync.set({"bgColor1": params.newValue}, function(){
-            console.log("Set color to " + params.newValue);
+            if(DEBUG) console.log("Set color to " + params.newValue);
         });
         $('.well').css("background-color", params.newValue);
         $('.row').css("background-color", params.newValue);
@@ -348,9 +385,9 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
 
     // On shadowColor color change, save value to memory & update css
     $('#shadowColor').on('save', function(event, params) {
-        console.log('Saved shadow value: ' + params.newValue);
+        if(DEBUG) console.log('Saved shadow value: ' + params.newValue);
         chrome.storage.sync.set({"shadowColor": params.newValue}, function(){
-            console.log("Set shadow to " + params.newValue);
+            if(DEBUG) console.log("Set shadow to " + params.newValue);
         });
         changeShadow(params.newValue);
     });
@@ -373,13 +410,15 @@ var loadData = function(savedData, savedHeader1, savedHeader2, savedHeader3, new
 // This will get the data if it exists, otherwise variables will be undefined
 var getData = function(callback){
     chrome.storage.sync.get(["todoData", "taskHeader1", "taskHeader2", "taskHeader3", "bgColor1", "shadowColor", "shortShadow"], function(val){
-        console.log("Loaded data! ");
-        console.log("Loaded taskHeader1! " + val.taskHeader1);
-        console.log("Loaded taskHeader2! " + val.taskHeader2);
-        console.log("Loaded taskHeader3! " + val.taskHeader3);
-        console.log("Loaded bgColor! " + val.bgColor1);
-        console.log("Loaded shadowColor! " + val.shadowColor);
-        console.log("Loaded shordShadow! " + val.shortShadow);
+        if(DEBUG) {
+            console.log("Loaded data! ");
+            console.log("Loaded taskHeader1! " + val.taskHeader1);
+            console.log("Loaded taskHeader2! " + val.taskHeader2);
+            console.log("Loaded taskHeader3! " + val.taskHeader3);
+            console.log("Loaded bgColor! " + val.bgColor1);
+            console.log("Loaded shadowColor! " + val.shadowColor);
+            console.log("Loaded shordShadow! " + val.shortShadow);
+        }
         callback(val.todoData, val.taskHeader1, val.taskHeader2, val.taskHeader3, val.bgColor1, val.shadowColor, val.shortShadow);
     });
 };

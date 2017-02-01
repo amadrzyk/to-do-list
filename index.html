@@ -1,7 +1,6 @@
 
-<!--TODO: - Add 'x' button beside each task, rather than having to drag it to 'delete' area
-    TODO: - Create 'add new pane' section
-    TODO: - Add a scrolling menu, allowing you to choose which pane to add the note to-->
+<!--TODO: - Add a select menu, allowing you to choose which pane to add the note to
+    TODO: - Create 'add new pane' section-->
 
 <html>
     <head>
@@ -17,7 +16,6 @@
 
     <body class="well">
         <div id="container">
-
             <div class="colorPicker">
                 BG: <a href="#" id="bgColor">#80B1EB</a>
             </div>
@@ -86,25 +84,11 @@
         <script src="lib/Bootstrap3/bootstrap.min.js"></script>
         <script src="lib/jQuery/jquery.ui.min.js"   ></script>
         <script src="assets/todo.js"                ></script>
-        <script>
-            $( "#datepicker" ).datepicker();
-            $( "#datepicker" ).datepicker("option", "dateFormat", "dd/mm/yy");
-
-            $(".task-container").droppable();
-            $(".todo-task").draggable({ revert: "valid", revertDuration:200 });
-            // todo.init();
-            // TODO: "how to call javascript function from another file"
-            // The issue here is that, none of the 'chrome' things are working
-            // The browser literally skips over every chrome thing
-
-            // UPDATE: Everything works! Once you figure out how to 
-            // retrieve a variable from chrome.storage.sync.get(), and 
-            // pass it back to a different scope, you'll be set!
-        </script>
+        <script src="assets/init.js"></script>
         <script src="lib/Bootstrap/bootstrap-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>
         <script src="lib/jQuery/jQuery-xcolor-master/jquery.xcolor.min.js"></script>
         <script src="lib/jQuery/jQuery-shadows/dynamic_shadow_color.min.js"></script>
         <script src="lib/jQuery/jQuery-shadows/plugins.js"></script>
-        <script src="lib/Packery/packery-docs.min.js"></script>
+        <!--<script src="lib/Packery/packery-docs.min.js"></script>-->
     </body>
 </html>

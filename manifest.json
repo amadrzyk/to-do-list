@@ -1,7 +1,7 @@
 {
 	"name": "To-Do List.",
 	"description": "A Simple To-Do List New-tab Page for Multitaskers",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"manifest_version": 2,
 	"permissions": [
 		"storage"
