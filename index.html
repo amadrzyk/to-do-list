@@ -1,3 +1,8 @@
+
+<!--TODO: - Add 'x' button beside each task, rather than having to drag it to 'delete' area
+    TODO: - Create 'add new pane' section
+    TODO: - Add a scrolling menu, allowing you to choose which pane to add the note to-->
+
 <html>
     <head>
         <title>To-Do List</title>
@@ -20,50 +25,60 @@
                 SHADOW COLOR: <a href="#" id="shadowColor">#0199D9</a>
             </div>
             <div class="shortShadow">
-                <span style="margin-right: 39px">SHORT SHADOW: </span><input type="checkbox" value="shortShadow" id="shortShadow" value="Shadow">
+                <span style="margin-right: 37px">SHORT SHADOW: </span><input title="shortShadow" type="checkbox" value="shortShadow" id="shortShadow" value="Shadow">
             </div>
             <div class="header">To-Do List.</div>
-            
-            <div class="row" style="margin-left: 8.5%" data-size="35" data-fade="1" data-opacity="0.3" data-placement="right-bottom">
-                <div class="task-list task-container shadow-object long-shadow" id="pending">
-                    <h3 class="tasklistHeaderH3">
-                        <a class="taskHeader" href="#" id="taskHeader1">New Name</a>
-                    </h3>
-                    <!--<div class="to-do-task">
-                        <div class="task-header">Sample Header</div>
-                        <div class="task-date">25/06/1992</div>
-                        <div class="task-description">Lorem Ipsum Dolor Sit Amet</div>
-                    </div>-->
-                </div>
 
-                <div class="task-list task-container shadow-object long-shadow" id="inProgress">
-                    <h3 class="tasklistHeaderH3">
-                        <a class="taskHeader" href="#" id="taskHeader2">New Name</a>
-                    </h3>
-                </div>
+            <div class="row duo drag-hero-demos" data-js="drag-hero-demos">
+                <!--<div class="duo__cell">-->
+                    <div class="drag-hero-demos__grid drag-hero-demos__grid--masonry" style="margin-left: 8.5%" data-size="35" data-fade="1" data-opacity="0.3" data-placement="right-bottom">
+                        <div class="drag-hero-demos__grid__masonry-grid-sizer"></div>
+                        <div class="drag-hero-demos__grid__masonry-gutter-sizer"></div>
+                        <div class="task-list task-container shadow-object long-shadow grid-item
+                                        drag-hero-demos__item drag-hero-demos__item--masonry" id="pending">
+                            <h3 class="tasklistHeaderH3">
+                                <a class="taskHeader" href="#" id="taskHeader1">New Name</a>
+                            </h3>
+                            <!--<div class="to-do-task">
+                                <div class="task-header">Sample Header</div>
+                                <div class="task-date">25/06/1992</div>
+                                <div class="task-description">Lorem Ipsum Dolor Sit Amet</div>
+                            </div>-->
+                        </div>
 
-                <div class="task-list task-container shadow-object long-shadow" id="completed">
-                    <h3 class="tasklistHeaderH3">
-                        <a class="taskHeader" href="#" id="taskHeader3">New Name</a>
-                    </h3>
-                </div>
+                        <div class="task-list task-container shadow-object long-shadow grid-item
+                                        drag-hero-demos__item drag-hero-demos__item--masonry" id="inProgress">
+                            <h3 class="tasklistHeaderH3">
+                                <a class="taskHeader" href="#" id="taskHeader2">New Name</a>
+                            </h3>
+                        </div>
 
-                <div class="task-list formList shadow-object long-shadow">
-                    <h3 class="tasklistHeaderH3" style="margin-bottom: 10px">Add a task</h3>
-                    <form id="todo-form">
-                        <input type="text" placeholder="Title" />
-                        <textarea placeholder="Description"></textarea>
-                        <input type="text" id="datepicker" placeholder="Due Date (dd/mm/yyyy)" />
-                        <input id="addBtn" type="button" class="btn btn-primary" value="Add Task" />
-                    </form>
+                        <div class="task-list task-container shadow-object long-shadow grid-item
+                                        drag-hero-demos__item drag-hero-demos__item--masonry" id="completed">
+                            <h3 class="tasklistHeaderH3">
+                                <a class="taskHeader" href="#" id="taskHeader3">New Name</a>
+                            </h3>
+                        </div>
 
-                    <input id="clearBtn" type="button" class="btn btn-primary" value="Clear Data" />
+                        <div class="task-list formList shadow-object long-shadow grid-item
+                                        drag-hero-demos__item drag-hero-demos__item--masonry">
+                            <h3 class="tasklistHeaderH3" style="margin-bottom: 10px">Add a task</h3>
+                            <form id="todo-form">
+                                <input type="text" placeholder="Title" />
+                                <textarea placeholder="Description"></textarea>
+                                <input type="text" id="datepicker" placeholder="Due Date (dd/mm/yyyy)" />
+                                <input id="addBtn" type="button" class="btn btn-primary" value="Add Task" />
+                            </form>
 
-                    <div id="delete-div">
-                        Drag Here to Delete
+                            <input id="clearBtn" type="button" class="btn btn-primary" value="Clear Data" />
+
+                            <div id="delete-div">
+                                Drag Here to Delete
+                            </div>
+                        </div>
+                        <div style="clear:both;"></div>
                     </div>
-                </div>
-                <div style="clear:both;"></div>
+                <!--</div>-->
             </div>
         </div>
 
@@ -71,10 +86,25 @@
         <script src="lib/Bootstrap3/bootstrap.min.js"></script>
         <script src="lib/jQuery/jquery.ui.min.js"   ></script>
         <script src="assets/todo.js"                ></script>
-        <script src="assets/init.js"                ></script>
+        <script>
+            $( "#datepicker" ).datepicker();
+            $( "#datepicker" ).datepicker("option", "dateFormat", "dd/mm/yy");
+
+            $(".task-container").droppable();
+            $(".todo-task").draggable({ revert: "valid", revertDuration:200 });
+            // todo.init();
+            // TODO: "how to call javascript function from another file"
+            // The issue here is that, none of the 'chrome' things are working
+            // The browser literally skips over every chrome thing
+
+            // UPDATE: Everything works! Once you figure out how to 
+            // retrieve a variable from chrome.storage.sync.get(), and 
+            // pass it back to a different scope, you'll be set!
+        </script>
         <script src="lib/Bootstrap/bootstrap-editable/bootstrap3-editable/js/bootstrap-editable.js"></script>
         <script src="lib/jQuery/jQuery-xcolor-master/jquery.xcolor.min.js"></script>
         <script src="lib/jQuery/jQuery-shadows/dynamic_shadow_color.min.js"></script>
         <script src="lib/jQuery/jQuery-shadows/plugins.js"></script>
+        <script src="lib/Packery/packery-docs.min.js"></script>
     </body>
 </html>

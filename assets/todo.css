@@ -68,12 +68,12 @@ form {
  /*   float: left;
     display:block;
     width: 100%;*/
-    margin-bottom: -25px;
+    margin-bottom: -43px;
     margin-right: 5px;
 }
 
 .tasklistHeaderH3{
-    padding-bottom: 13px;
+    padding-bottom: 20px;
     margin-bottom: 0;
     border-bottom: 2px solid #e3e3e3;
 }
@@ -91,7 +91,8 @@ form {
 }
 
 .task-list input, .task-list textarea{
-    width: 240px;
+    /*width: 240px;*/
+    width: 93%;
     margin: 1px 5px;
 }
 
@@ -217,4 +218,17 @@ textarea, input {
 
 .ui-draggable-dragging {
     z-index: 999999!important;
+}
+
+
+/* ============================================== PACKERY =========================================================== */
+
+/* ---- masonry ---- */
+
+.drag-hero-demos__item,.drag-hero-demos__grid__masonry-grid-sizer {
+    width: 20.5%;
+}
+
+.drag-hero-demos__grid__masonry-gutter-sizer {
+    width: 2%;
 }

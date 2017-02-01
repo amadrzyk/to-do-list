@@ -1,0 +1,985 @@
+<!doctype html>
+<html class="export" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="Gapless, draggable grid layouts">
+
+  <title>Packery &#xB7; Methods</title>
+
+    <link rel="stylesheet" href="css/packery-docs.css" media="screen">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@metafizzyco">
+  <meta name="twitter:title" content="Packery Methods">
+  <meta name="twitter:description" content="Gapless, draggable grid layouts">
+
+</head>
+<body class="-page" data-page="">
+
+<div class="site-nav">
+  <h1 class="site-nav__title"><a href=".">Packery</a></h1>
+  <ol class="site-nav__list">
+    <li class="site-nav__item site-nav__item--layout"><a href="layout.html">Layout</a></li>
+    <li class="site-nav__item site-nav__item--options"><a href="options.html">Options</a></li>
+    <li class="site-nav__item site-nav__item--methods"><a href="methods.html">Methods</a></li>
+    <li class="site-nav__item site-nav__item--draggable"><a href="draggable.html">Draggable</a></li>
+    <li class="site-nav__item site-nav__item--events"><a href="events.html">Events</a></li>
+    <li class="site-nav__item site-nav__item--extras"><a href="extras.html">Extras</a></li>
+    <li class="site-nav__item site-nav__item--license"><a href="license.html">License</a></li>
+  </ol>
+</div>
+
+
+<div id="content" class="main">
+
+  <div class="container">
+      <h1>Methods</h1>
+
+    <ul class="page-nav" data-js="page-nav">
+<li class="page-nav__item page-nav__item--h2"><a href="#layout">Layout</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#layout-packery">layout / .packery()</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#shiftlayout">shiftLayout</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#layoutitems">layoutItems</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#fit">fit</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#stamp">stamp</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#unstamp">unstamp</a></li>
+<li class="page-nav__item page-nav__item--h2"><a href="#adding-removing-items">Adding &amp; removing items</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#appended">appended</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#prepended">prepended</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#additems">addItems</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#remove">remove</a></li>
+<li class="page-nav__item page-nav__item--h2"><a href="#utilities">Utilities</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#reloaditems">reloadItems</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#destroy">destroy</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#getitemelements">getItemElements</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#jquery-fn-data-packery">jQuery.fn.data(&apos;packery&apos;)</a></li>
+<li class="page-nav__item page-nav__item--h3"><a href="#packery-data">Packery.data</a></li>
+</ul>
+
+
+
+<p>Methods are actions done by Packery instances.</p>
+
+<p>With jQuery, methods follow the jQuery UI pattern <code>.packery( <span class="string">&apos;methodName&apos;</span> <span class="comment">/* arguments */</span> )</code>.</p>
+
+<pre><code class="js"><span class="jquery_var">$grid</span>.packery()
+  .append( elem )
+  .packery( <span class="string">&apos;appended&apos;</span>, elem )
+  <span class="comment">// layout</span>
+  .packery();
+</code></pre>
+
+<div class="call-out">
+  <p>jQuery chaining is broken by methods that return values: (i.e.
+    <a href="#getitemelements"><code>getItemElements</code></a>).
+  </p>
+</div>
+
+<p>Vanilla JavaScript methods look like <code>packery.methodName( <span class="comment">/* arguments */</span> )</code>. Unlike jQuery methods, they cannot be chained together.</p>
+
+<pre><code class="js"><span class="comment">// vanilla JS</span>
+<span class="keyword">var</span> <span class="packery_var">pckry</span> = <span class="keyword">new</span> <span class="packery">Packery</span>( <span class="string">&apos;.grid&apos;</span>, {...});
+gridElement.appendChild( elem );
+<span class="packery_var">pckry</span>.appended( elem );
+<span class="packery_var">pckry</span>.layout();
+</code></pre>
+
+
+<h2 id="layout">Layout</h2>
+
+
+<h3 id="layout-packery">layout / .packery()</h3>
+
+<p>Lays out all item elements. <code>layout</code> is useful when an item has changed size, and all items need to be laid out again.</p>
+
+<pre><code class="js"><span class="comment">// jQuery</span>
+<span class="jquery_var">$grid</span>.packery()
+<span class="comment">// vanilla JS</span>
+<span class="packery_var">pckry</span>.layout()
+</code></pre>
+
+<div class="duo example">
+  <div class="duo__cell example__code">
+<pre><code class="js"><span class="keyword">var</span> <span class="jquery_var">$grid</span> = $(<span class="string">&apos;.grid&apos;</span>).packery({
+  itemSelector: <span class="string">&apos;.grid-item&apos;</span>
+});
+
+<span class="jquery_var">$grid</span>.on( <span class="string">&apos;click&apos;</span>, <span class="string">&apos;.grid-item&apos;</span>, <span class="function"><span class="keyword">function</span><span class="params">( event )</span> </span>{
+  <span class="comment">// change size of item by toggling large class</span>
+  $(  event.currentTarget  ).toggleClass(<span class="string">&apos;grid-item--large&apos;</span>);
+  <span class="comment">// trigger layout after item size changes</span>
+  <span class="jquery_var">$grid</span>.packery(<span class="string">&apos;layout&apos;</span>);
+});
+</code></pre>
+  </div>
+  <div class="duo__cell example__demo" data-js="layout">
+    <p class="instruction">Click item to toggle size</p>
+  
+    <div class="grid grid--clickable">
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item grid-item--width2 grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+    </div>
+  
+    <p class="edit-demo">
+        <a href="http://codepen.io/desandro/pen/ksdGx">Edit this demo</a>
+        or <a href="http://codepen.io/desandro/pen/dLgKw">vanilla JS demo</a> on CodePen
+    </p>
+  </div>
+</div>
+
+
+<h3 id="shiftlayout">shiftLayout</h3>
+
+<p>Shifts all item positions, maintaining their horizontal position.</p>
+
+<p>After an item has changed, <code>shiftLayout</code> will move items up and down to best fit the change. This maintains more order compared to using <a href="#layout-packery"><code>layout/.packery()</code></a>, where item positions can be completely changed.</p>
+
+<pre><code class="js"><span class="comment">// jQuery</span>
+<span class="jquery_var">$grid</span>.packery(<span class="string">&apos;shiftLayout&apos;</span>)
+<span class="comment">// vanilla JS</span>
+<span class="packery_var">pckry</span>.shiftLayout()
+</code></pre>
+
+<div class="duo example">
+  <div class="duo__cell example__code">
+<pre><code class="js"><span class="keyword">var</span> <span class="jquery_var">$grid</span> = $(<span class="string">&apos;.grid&apos;</span>).packery({
+  itemSelector: <span class="string">&apos;.grid-item&apos;</span>
+});
+
+<span class="jquery_var">$grid</span>.on( <span class="string">&apos;click&apos;</span>, <span class="string">&apos;.grid-item&apos;</span>, <span class="function"><span class="keyword">function</span><span class="params">( event )</span> </span>{
+  <span class="comment">// change size of item by toggling large class</span>
+  $( event.currentTarget ).toggleClass(<span class="string">&apos;grid-item--large&apos;</span>);
+  <span class="comment">// trigger shiftLayout after item size changes</span>
+  <span class="jquery_var">$grid</span>.packery(<span class="string">&apos;shiftLayout&apos;</span>);
+});
+</code></pre>
+  </div>
+  <div class="duo__cell example__demo" data-js="shift-layout">
+    <p class="instruction">Click item to toggle size</p>
+  
+    <div class="grid grid--clickable">
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item grid-item--width2 grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+    </div>
+  
+    <p class="edit-demo">
+        <a href="http://codepen.io/desandro/pen/pgVQLz">Edit this demo</a>
+        or <a href="http://codepen.io/desandro/pen/eJrQrJ">vanilla JS demo</a> on CodePen
+    </p>
+  </div>
+</div>
+
+
+<h3 id="layoutitems">layoutItems</h3>
+
+<p>Lays out specified items.</p>
+
+<pre><code class="js"><span class="comment">// jQuery</span>
+<span class="jquery_var">$grid</span>.packery( <span class="string">&apos;layoutItems&apos;</span>, items, isInstant )
+<span class="comment">// vanilla JS</span>
+<span class="packery_var">pckry</span>.layoutItems( items, isInstant )
+</code></pre>
+
+<p class="variable">
+  <code class="variable__code">items</code>
+  <span class="variable__type"><i>Array</i> of <i>Packery.Item</i>s</span>
+</p>
+
+<p class="variable">
+  <code class="variable__code">isInstant</code>
+  <span class="variable__type"><i>Boolean</i></span>
+  <span class="variable__description">Disables transitions</span>
+</p>
+
+
+<h3 id="fit">fit</h3>
+
+<p>Fit an item element within the layout, and <a href="#shiftlayout">shiftLayouts</a> other item elements around it. <code>fit</code> is useful when expanding an element, and keeping it in its same position.</p>
+
+<pre><code class="js"><span class="comment">// jQuery</span>
+$container.packery( <span class="string">&apos;fit&apos;</span>, element, x, y )
+<span class="comment">// vanilla JS</span>
+<span class="packery_var">pckry</span>.fit( element, x, y )
+</code></pre>
+
+<p class="variable">
+  <code class="variable__code">element</code>
+  <span class="variable__type"><i>Element</i></span>
+</p>
+
+<p class="variable">
+  <code class="variable__code">x</code>
+  <span class="variable__type"><i>Number</i></span>
+  <span class="variable__description">Horizontal position, optional</span>
+</p>
+
+<p class="variable">
+  <code class="variable__code">y</code>
+  <span class="variable__type"><i>Number</i></span>
+  <span class="variable__description">Vertical position, optional</span>
+</p>
+
+<div class="duo example">
+  <div class="duo__cell example__code">
+<pre><code class="js"><span class="jquery_var">$grid</span>.on( <span class="string">&apos;click&apos;</span>, <span class="string">&apos;.grid-item&apos;</span>, <span class="function"><span class="keyword">function</span><span class="params">( event )</span> </span>{
+  <span class="keyword">var</span> $item = $( event.currentTarget );
+  <span class="comment">// change size of item by toggling large class</span>
+  $item.toggleClass(<span class="string">&apos;grid-item--large&apos;</span>);
+  <span class="keyword">if</span> ( $item.is(<span class="string">&apos;.grid-item--large&apos;</span>) ) {
+    <span class="comment">// fit large item</span>
+    <span class="jquery_var">$grid</span>.packery( <span class="string">&apos;fit&apos;</span>, event.currentTarget );
+  } <span class="keyword">else</span> {
+    <span class="comment">// back to small, shiftLayout back</span>
+    <span class="jquery_var">$grid</span>.packery(<span class="string">&apos;shiftLayout&apos;</span>);
+  }
+});
+</code></pre>
+  </div>
+  <div class="duo__cell example__demo" data-js="fit">
+    <p class="instruction">Click item to toggle size</p>
+  
+    <div class="grid grid--clickable">
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item grid-item--width2 grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+    </div>
+  
+    <p class="edit-demo">
+        <a href="http://codepen.io/desandro/pen/iLyfC">Edit this demo</a>
+        or <a href="http://codepen.io/desandro/pen/rwhjq">vanilla JS demo</a> on CodePen
+    </p>
+  </div>
+</div>
+
+<p>You can fit an element in a specific position.</p>
+
+<div class="duo example">
+  <div class="duo__cell example__code">
+<pre><code class="js"><span class="jquery_var">$grid</span>.on( <span class="string">&apos;click&apos;</span>, <span class="string">&apos;.grid-item&apos;</span>, <span class="function"><span class="keyword">function</span><span class="params">( event )</span> </span>{
+  <span class="jquery_var">$grid</span>.packery( <span class="string">&apos;fit&apos;</span>, event.currentTarget, <span class="number">120</span>, <span class="number">60</span> );
+});
+</code></pre>
+  </div>
+  <div class="duo__cell example__demo" data-js="fit-position">
+    <p class="instruction">Click item to fit at 120, 60</p>
+  
+    <div class="grid grid--clickable">
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item grid-item--width2 grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+    </div>
+  
+    <button class="button layout-button" style="margin-top: 10px;">Layout</button>
+  
+    <p class="edit-demo">
+        <a href="http://codepen.io/desandro/pen/fguJH">Edit this demo</a>
+        or <a href="http://codepen.io/desandro/pen/uspgI">vanilla JS demo</a> on CodePen
+    </p>
+  </div>
+</div>
+
+
+<h3 id="stamp">stamp</h3>
+
+<p>Stamps elements in the layout. Packery will lay out item elements <em>around</em> stamped elements.</p>
+
+<pre><code class="js"><span class="comment">// jQuery</span>
+<span class="jquery_var">$grid</span>.packery( <span class="string">&apos;stamp&apos;</span>, elements )
+<span class="comment">// vanilla JS</span>
+<span class="packery_var">pckry</span>.stamp( elements )
+</code></pre>
+
+<p class="variable">
+  <code class="variable__code">elements</code>
+  <span class="variable__type">
+    <i>Element</i>,
+    <i>jQuery</i> Object,
+    <i>NodeList</i>, or
+    <i>Array</i> of Elements
+  </span>
+</p>
+
+<p>Set <a href="options.html#itemselector"><code>itemSelector</code></a> so that stamps do not get used as layout items.</p>
+
+<div class="duo example">
+  <div class="duo__cell example__code">
+<pre><code class="js"><span class="keyword">var</span> <span class="jquery_var">$grid</span> = $(<span class="string">&apos;.grid&apos;</span>).packery({
+  <span class="comment">// specify itemSelector so stamps do get laid out</span>
+  itemSelector: <span class="string">&apos;.grid-item&apos;</span>
+});
+<span class="keyword">var</span> $stamp = <span class="jquery_var">$grid</span>.find(<span class="string">&apos;.stamp&apos;</span>);
+<span class="keyword">var</span> isStamped = <span class="literal">false</span>;
+
+$(<span class="string">&apos;.toggle-stamp-button&apos;</span>).on( <span class="string">&apos;click&apos;</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{
+  <span class="comment">// stamp or unstamp element</span>
+  <span class="keyword">if</span> ( isStamped ) {
+    <span class="jquery_var">$grid</span>.packery( <span class="string">&apos;unstamp&apos;</span>, $stamp );
+  } <span class="keyword">else</span> {
+    <span class="jquery_var">$grid</span>.packery( <span class="string">&apos;stamp&apos;</span>, $stamp );
+  }
+  <span class="comment">// trigger layout</span>
+  <span class="jquery_var">$grid</span>.packery(<span class="string">&apos;layout&apos;</span>);
+  <span class="comment">// set flag</span>
+  isStamped = !isStamped;
+});
+</code></pre>
+  </div>
+  <div class="duo__cell example__demo" data-js="stamp-methods">
+    <button class="button stamp-button">Toggle stamped</button>
+    <div class="grid grid--has-stamp grid--stamp-methods-demo">
+      <div class="stamp stamp--stamp-methods-demo"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item grid-item--width2 grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+    </div>
+    <p class="edit-demo">
+        <a href="http://codepen.io/desandro/pen/bmfow">Edit this demo</a>
+        or <a href="http://codepen.io/desandro/pen/pstDE">vanilla JS demo</a> on CodePen
+    </p>
+  </div>
+</div>
+
+
+<h3 id="unstamp">unstamp</h3>
+
+<p>Un-stamps elements in the layout, so that Packery will no longer layout item elements around them. <a href="#stamp">See demo above</a>.</p>
+
+<pre><code class="js"><span class="comment">// jQuery</span>
+<span class="jquery_var">$grid</span>.packery( <span class="string">&apos;unstamp&apos;</span>, elements )
+<span class="comment">// vanilla JS</span>
+<span class="packery_var">pckry</span>.unstamp( elements )
+</code></pre>
+
+<p class="variable">
+  <code class="variable__code">elements</code>
+  <span class="variable__type">
+    <i>Element</i>,
+    <i>jQuery</i> Object,
+    <i>NodeList</i>, or
+    <i>Array</i> of Elements
+  </span>
+</p>
+
+
+<h2 id="adding-removing-items">Adding &amp; removing items</h2>
+
+
+<h3 id="appended">appended</h3>
+
+<p>Adds and lays out newly appended item elements to the end of the layout.</p>
+
+<pre><code class="js"><span class="comment">// jQuery</span>
+<span class="jquery_var">$grid</span>.packery( <span class="string">&apos;appended&apos;</span>, elements )
+<span class="comment">// vanilla JS</span>
+<span class="packery_var">pckry</span>.appended( elements )
+</code></pre>
+
+<p class="variable">
+  <code class="variable__code">elements</code>
+  <span class="variable__type">
+    <i>Element</i>,
+    <i>jQuery</i> Object,
+    <i>NodeList</i>, or
+    <i>Array</i> of Elements
+  </span>
+</p>
+
+<div class="duo example">
+  <div class="duo__cell example__code">
+<pre><code class="js">$(<span class="string">&apos;.append-button&apos;</span>).on( <span class="string">&apos;click&apos;</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{
+  <span class="comment">// create new item elements</span>
+  <span class="keyword">var</span> $items = $(<span class="string">&apos;&lt;div class=&quot;grid-item&quot;&gt;...&lt;/div&gt;&apos;</span>);
+  <span class="comment">// append items to grid</span>
+  <span class="jquery_var">$grid</span>.append( $items )
+    <span class="comment">// add and lay out newly appended items</span>
+    .packery( <span class="string">&apos;appended&apos;</span>, $items );
+});
+</code></pre>
+  </div>
+  <div class="duo__cell example__demo" data-js="appended">
+    <div class="grid">
+      <div class="grid-item grid-item--width3"></div>
+      <div class="grid-item grid-item--height3"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+    </div>
+    <button class="button append-button" style="margin-top: 10px;">Append items</button>
+    <p class="edit-demo">
+        <a href="http://codepen.io/desandro/pen/HFbia">Edit this demo</a>
+        or <a href="http://codepen.io/desandro/pen/ndoxe">vanilla JS demo</a> on CodePen
+    </p>
+  </div>
+</div>
+
+
+<h3 id="prepended">prepended</h3>
+
+<p>Adds and lays out newly prepended item elements at the beginning of layout.</p>
+
+<pre><code class="js"><span class="comment">// jQuery</span>
+<span class="packery_var">pckry</span>.prepended( elements )
+<span class="comment">// vanilla JS</span>
+<span class="jquery_var">$grid</span>.packery( <span class="string">&apos;prepended&apos;</span>, elements )
+</code></pre>
+
+<p class="variable">
+  <code class="variable__code">elements</code>
+  <span class="variable__type">
+    <i>Element</i>,
+    <i>jQuery</i> Object,
+    <i>NodeList</i>, or
+    <i>Array</i> of Elements
+  </span>
+</p>
+
+<div class="duo example">
+  <div class="duo__cell example__code">
+<pre><code class="js">$(<span class="string">&apos;.prepend-button&apos;</span>).on( <span class="string">&apos;click&apos;</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{
+  <span class="comment">// create new item elements</span>
+  <span class="keyword">var</span> $items = $(<span class="string">&apos;&lt;div class=&quot;grid-item&quot;&gt;...&lt;/div&gt;&apos;</span>);
+  <span class="comment">// prepend items to grid</span>
+  <span class="jquery_var">$grid</span>.prepend( $items )
+    <span class="comment">// add and lay out newly prepended items</span>
+    .packery( <span class="string">&apos;prepended&apos;</span>, $items );
+});
+</code></pre>
+  </div>
+  <div class="duo__cell example__demo" data-js="prepended">
+    <button class="button prepend-button">Prepend items</button>
+    <div class="grid">
+      <div class="grid-item grid-item--width3"></div>
+      <div class="grid-item grid-item--height3"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+    </div>
+    <p class="edit-demo">
+        <a href="http://codepen.io/desandro/pen/EzopH">Edit this demo</a>
+        or <a href="http://codepen.io/desandro/pen/EhvLy">vanilla JS demo</a> on CodePen
+    </p>
+  </div>
+</div>
+
+
+<h3 id="additems">addItems</h3>
+
+<p>Adds item elements to the Packery instance. <code>addItems</code> does not lay out items like <a href="#appended"><code>appended</code></a> or <a href="#prepended"><code>prepended</code></a>.</p>
+
+<pre><code class="js"><span class="comment">// jQuery</span>
+<span class="jquery_var">$grid</span>.packery( <span class="string">&apos;addItems&apos;</span>, elements )
+<span class="comment">// vanilla JS</span>
+<span class="packery_var">pckry</span>.addItems( elements )
+</code></pre>
+
+<p class="variable">
+  <code class="variable__code">elements</code>
+  <span class="variable__type">
+    <i>Element</i>,
+    <i>jQuery</i> Object,
+    <i>NodeList</i>, or
+    <i>Array</i> of Elements
+  </span>
+</p>
+
+
+<h3 id="remove">remove</h3>
+
+<p>Removes elements from the Packery instance and DOM.</p>
+
+<pre><code class="js"><span class="comment">// jQuery</span>
+<span class="jquery_var">$grid</span>.packery( <span class="string">&apos;remove&apos;</span>, elements )
+<span class="comment">// vanilla JS</span>
+<span class="packery_var">pckry</span>.remove( elements )
+</code></pre>
+
+<p class="variable">
+  <code class="variable__code">elements</code>
+  <span class="variable__type">
+    <i>Element</i>,
+    <i>jQuery</i> Object,
+    <i>NodeList</i>, or
+    <i>Array</i> of Elements
+  </span>
+</p>
+
+<div class="duo example">
+  <div class="duo__cell example__code">
+<pre><code class="js"><span class="jquery_var">$grid</span>.on( <span class="string">&apos;click&apos;</span>, <span class="string">&apos;.grid-item&apos;</span>, <span class="function"><span class="keyword">function</span><span class="params">( event )</span> </span>{
+  <span class="comment">// remove clicked element</span>
+  <span class="jquery_var">$grid</span>.packery( <span class="string">&apos;remove&apos;</span>, event.currentTarget )
+    <span class="comment">// shiftLayout remaining item elements</span>
+    .packery(<span class="string">&apos;shiftLayout&apos;</span>);
+});
+</code></pre>
+  </div>
+  <div class="duo__cell example__demo" data-js="remove">
+    <p class="instruction">Click items to remove</p>
+    <div class="grid grid--clickable">
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item grid-item--width2 grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+    </div>
+    <p class="edit-demo">
+        <a href="http://codepen.io/desandro/pen/Jisaz">Edit this demo</a>
+        or <a href="http://codepen.io/desandro/pen/akrvC">vanilla JS demo</a> on CodePen
+    </p>
+  </div>
+</div>
+
+
+<h2 id="utilities">Utilities</h2>
+
+
+<h3 id="reloaditems">reloadItems</h3>
+
+<p>Recollects all item elements.</p>
+
+<p>For frameworks like React and Angular, <code>reloadItems</code> may be useful to apply changes to the DOM to Packery.</p>
+
+<pre><code class="js"><span class="comment">// jQuery</span>
+<span class="jquery_var">$grid</span>.packery(<span class="string">&apos;reloadItems&apos;</span>)
+<span class="comment">// vanilla JS</span>
+<span class="packery_var">pckry</span>.reloadItems()
+</code></pre>
+
+
+<h3 id="destroy">destroy</h3>
+
+<p>Removes the Packery functionality completely. <code>destroy</code> will return the element back to its pre-initialized state.</p>
+
+<pre><code class="js"><span class="comment">// jQuery</span>
+<span class="jquery_var">$grid</span>.packery(<span class="string">&apos;destroy&apos;</span>)
+<span class="comment">// vanilla JS</span>
+<span class="packery_var">pckry</span>.destroy()
+</code></pre>
+
+<div class="duo example">
+  <div class="duo__cell example__code">
+<pre><code class="js"><span class="keyword">var</span> packeryOptions = {
+  itemSelector: <span class="string">&apos;.grid-item&apos;</span>,
+  columnWidth: <span class="number">80</span>
+};
+<span class="comment">// initialize Packery</span>
+<span class="keyword">var</span> <span class="jquery_var">$grid</span> = $(<span class="string">&apos;.grid&apos;</span>).packery( packeryOptions );
+<span class="keyword">var</span> isActive = <span class="literal">true</span>;
+
+$(<span class="string">&apos;.toggle-button&apos;</span>).on( <span class="string">&apos;click&apos;</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{
+  <span class="keyword">if</span> ( isActive ) {
+    <span class="jquery_var">$grid</span>.packery(<span class="string">&apos;destroy&apos;</span>); <span class="comment">// destroy</span>
+  } <span class="keyword">else</span> {
+    <span class="jquery_var">$grid</span>.packery( packeryOptions ); <span class="comment">// re-initialize</span>
+  }
+  <span class="comment">// set flag</span>
+  isActive = !isActive;
+});
+</code></pre>
+  </div>
+  <div class="duo__cell example__demo" data-js="destroy">
+    <button class="button toggle-button">Toggle Packery</button>
+    <div class="grid">
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item grid-item--width2 grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--width2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item grid-item--height2"></div>
+      <div class="grid-item"></div>
+      <div class="grid-item"></div>
+    </div>
+    <p class="edit-demo">
+        <a href="http://codepen.io/desandro/pen/jPyoRE">Edit this demo</a>
+        or <a href="http://codepen.io/desandro/pen/EogCw">vanilla JS demo</a> on CodePen
+    </p>
+  </div>
+</div>
+
+
+<h3 id="getitemelements">getItemElements</h3>
+
+<p>Returns an array of item elements.</p>
+
+<pre><code class="js"><span class="comment">// jQuery</span>
+<span class="keyword">var</span> elems = <span class="jquery_var">$grid</span>.packery(<span class="string">&apos;getItemElements&apos;</span>)
+<span class="comment">// vanilla JS</span>
+<span class="keyword">var</span> elems = <span class="packery_var">pckry</span>.getItemElements()
+</code></pre>
+
+<p class="variable">
+  <code class="variable__code">elems</code>
+  <span class="variable__type"><i>Array</i> of <i>Element</i>s</span>
+</p>
+
+
+<h3 id="jquery-fn-data-packery">jQuery.fn.data(&apos;packery&apos;)</h3>
+
+<p>Get the Packery instance from a jQuery object. Packery instances are useful to access Packery properties.</p>
+
+<pre><code class="js"><span class="keyword">var</span> <span class="packery_var">pckry</span> = $(<span class="string">&apos;.grid&apos;</span>).data(<span class="string">&apos;packery&apos;</span>)
+<span class="comment">// access Packery properties</span>
+<span class="built_in">console</span>.log( <span class="packery_var">pckry</span>.filteredItems.length + <span class="string">&apos; filtered items&apos;</span>  )
+</code></pre>
+
+
+<h3 id="packery-data">Packery.data</h3>
+
+<p>Get the Packery instance via its element. <code>Packery.data()</code> is useful for getting the Packery instance in JavaScript, after it has been initalized in HTML.</p>
+
+<pre><code class="js"><span class="keyword">var</span> <span class="packery_var">pckry</span> = <span class="packery">Packery</span>.data( element )
+</code></pre>
+
+<p class="variable">
+  <code class="variable__code">element</code>
+  <span class="variable__type"><i>Element</i> or Selector <i>String</i></span>
+</p>
+
+<p class="variable">
+  <code class="variable__code">pckry</code>
+  <span class="variable__type"><i>Packery</i></span>
+</p>
+
+<pre><code class="html"><span class="comment">&lt;!-- init Packery in HTML --&gt;</span>
+<span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">&quot;grid&quot;</span> <span class="attribute">data-packery</span>=<span class="value">&apos;{...}&apos;</span>&gt;</span>...<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+</code></pre>
+
+<pre><code class="js"><span class="comment">// jQuery</span>
+<span class="comment">// pass in the element, $element[0], not the jQuery object</span>
+<span class="keyword">var</span> <span class="packery_var">pckry</span> = <span class="packery">Packery</span>.data( $(<span class="string">&apos;.grid&apos;</span>)[<span class="number">0</span>] )
+
+<span class="comment">// vanilla JS</span>
+<span class="comment">// using an element</span>
+<span class="keyword">var</span> grid = <span class="built_in">document</span>.querySelector(<span class="string">&apos;.grid&apos;</span>)
+<span class="keyword">var</span> <span class="packery_var">pckry</span> = <span class="packery">Packery</span>.data( grid )
+<span class="comment">// using a selector string</span>
+<span class="keyword">var</span> <span class="packery_var">pckry</span> = <span class="packery">Packery</span>.data(<span class="string">&apos;.grid&apos;</span>)
+</code></pre>
+
+
+  </div>
+
+</div>
+
+<div class="site-nav">
+  <h1 class="site-nav__title"><a href=".">Packery</a></h1>
+  <ol class="site-nav__list">
+    <li class="site-nav__item site-nav__item--layout"><a href="layout.html">Layout</a></li>
+    <li class="site-nav__item site-nav__item--options"><a href="options.html">Options</a></li>
+    <li class="site-nav__item site-nav__item--methods"><a href="methods.html">Methods</a></li>
+    <li class="site-nav__item site-nav__item--draggable"><a href="draggable.html">Draggable</a></li>
+    <li class="site-nav__item site-nav__item--events"><a href="events.html">Events</a></li>
+    <li class="site-nav__item site-nav__item--extras"><a href="extras.html">Extras</a></li>
+    <li class="site-nav__item site-nav__item--license"><a href="license.html">License</a></li>
+  </ol>
+</div>
+
+<footer class="site-footer">
+
+  <div class="container">
+
+    <p class="site-footer__copy">Metafizzy makes delightful UI libraries &amp; logos</p>
+
+    <div class="showcase">
+    
+      <ul class="showcase-item-list">
+          <li class="showcase-item">
+            <a class="showcase-item__link" href="http://isotope.metafizzy.co">
+              <div class="showcase-item__image">
+                  <svg class="isotope-illo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 350 350" width="100" height="100">
+                    <path class="isotope-illo__color1" fill="#6C6" d="M80 170H30c-6 0-10-5-10-10v-50c0-6 5-10 10-10h50c6 0 10 5 10 10v50C90 166 86 170 80 170z"/>
+                    <path class="isotope-illo__color1" fill="#6C6" d="M80 90H30c-6 0-10-5-10-10V30c0-6 5-10 10-10h50c6 0 10 5 10 10v50C90 86 86 90 80 90z"/>
+                    <path class="isotope-illo__color1" fill="#6C6" d="M160 90h-50c-6 0-10-5-10-10V30c0-6 5-10 10-10h50c6 0 10 5 10 10v50C170 86 166 90 160 90z"/>
+                    <path class="isotope-illo__color1" fill="#6C6" d="M240 90h-50c-6 0-10-5-10-10V30c0-6 5-10 10-10h50c6 0 10 5 10 10v50C250 86 246 90 240 90z"/>
+                    <path class="isotope-illo__color1" fill="#6C6" d="M320 90h-50c-6 0-10-5-10-10V30c0-6 5-10 10-10h50c6 0 10 5 10 10v50C330 86 326 90 320 90z"/>
+                    <path class="isotope-illo__color1" fill="#6C6" d="M155 165h-40c-6 0-10-5-10-10v-40c0-6 5-10 10-10h40c6 0 10 5 10 10v40 C165 161 161 165 155 165z"/>
+                    <path class="isotope-illo__color1" fill="#6C6" d="M230 160h-30c-6 0-10-5-10-10v-30c0-6 5-10 10-10h30c6 0 10 5 10 10v30 C240 156 236 160 230 160z"/>
+                    <path class="isotope-illo__color1" fill="#6C6" d="M305 155h-20c-6 0-10-5-10-10v-20c0-6 5-10 10-10h20c6 0 10 5 10 10v20 C315 151 311 155 305 155z"/>
+                    <path class="isotope-illo__color1" fill="#6C6" d="M65 235H45c-6 0-10-5-10-10v-20c0-6 5-10 10-10h20c6 0 10 5 10 10v20C75 231 71 235 65 235z"/>
+                    <path class="isotope-illo__color1" fill="#6C6" d="M140 230h-10c-6 0-10-5-10-10v-10c0-6 5-10 10-10h10c6 0 10 5 10 10v10 C150 226 146 230 140 230z"/>
+                    <path class="isotope-illo__color2" fill="#19F" d="M305 235h-20c-6 0-10-5-10-10v-20c0-6 5-10 10-10h20c6 0 10 5 10 10v20 C315 231 311 235 305 235z"/>
+                    <path class="isotope-illo__color2" fill="#19F" d="M65 315H45c-6 0-10-5-10-10v-20c0-6 5-10 10-10h20c6 0 10 5 10 10v20C75 311 71 315 65 315z"/>
+                    <path class="isotope-illo__color2" fill="#19F" d="M150 320h-30c-6 0-10-5-10-10v-30c0-6 5-10 10-10h30c6 0 10 5 10 10v30 C160 316 156 320 150 320z"/>
+                    <path class="isotope-illo__color2" fill="#19F" d="M220 230h-10c-6 0-10-5-10-10v-10c0-6 5-10 10-10h10c6 0 10 5 10 10v10 C230 226 226 230 220 230z"/>
+                    <path class="isotope-illo__color2" fill="#19F" d="M235 325h-40c-6 0-10-5-10-10v-40c0-6 5-10 10-10h40c6 0 10 5 10 10v40 C245 321 241 325 235 325z"/>
+                    <path class="isotope-illo__color2" fill="#19F" d="M320 330h-50c-6 0-10-5-10-10v-50c0-6 5-10 10-10h50c6 0 10 5 10 10v50 C330 326 326 330 320 330z"/>
+                  </svg>
+              </div>
+              <div class="showcase-item__text">
+                <h3 class="showcase-item__title">Isotope</h3>
+                <p class="showcase-item__description">Filter &amp; sort magical layouts</p>
+              </div>
+            </a>
+          </li>
+    
+          <li class="showcase-item">
+            <a class="showcase-item__link" href="http://flickity.metafizzy.co">
+              <div class="showcase-item__image">
+                  <svg class="flickity-illo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 360 360" width="100" height="100">
+                    <path class="flickity-illo__color1" fill="#19F" d="M300 220L300 220c-11 0-20-9-20-20v-80c0-11 9-20 20-20h0V220z"/>
+                    <path class="flickity-illo__color1" fill="#19F" d="M340 220L340 220c-11 0-20-9-20-20v-80c0-11 9-20 20-20h0V220z"/>
+                    <path class="flickity-illo__color2" fill="#333" d="M320 290V180c0-18-10-35-27-43L240 110v180H320z"/>
+                    <path class="flickity-illo__color3" fill="white" d="M240 300H120c-11 0-20-9-20-20V40c0-11 9-20 20-20h120c11 0 20 9 20 20v240C260 291 251 300 240 300z"/>
+                    <path class="flickity-illo__color4" fill="#ED0" d="M230 260H130c-6 0-10-5-10-10V70c0-6 5-10 10-10h100c6 0 10 5 10 10v180 C240 256 236 260 230 260z"/>
+                    <path class="flickity-illo__color2" fill="#333" d="M260 200h60v81c0 32-26 59-59 59h0c-34 0-61-27-61-61V240h20 C242 240 260 222 260 200L260 200z"/>
+                    <path class="flickity-illo__color5" fill="#C25" d="M180 220h-60V100h60c6 0 10 5 10 10v100C190 216 186 220 180 220z"/>
+                    <path class="flickity-illo__color1" fill="#19F" d="M240 220h-20c-6 0-10-5-10-10V110c0-6 5-10 10-10h20V220z"/>
+                    <rect class="flickity-illo__color2" fill="#333" x="230" y="280" width="90" height="80"/>
+                    <circle class="flickity-illo__color4" fill="#ED0" cx="180" cy="280" r="10"/>
+                    <line class="flickity-illo__thumb" stroke="#333" stroke-width="60" stroke-linecap="round" x1="262" y1="290" x2="152" y2="240"/>
+                    <path class="flickity-illo__color4" fill="#ED0" d="M190 50h-20c-6 0-10-5-10-10v0c0-6 5-10 10-10h20c6 0 10 5 10 10v0C200 46 196 50 190 50z"/>
+                    <path class="flickity-illo__color5" fill="#C25" d="M80 220L80 220c-11 0-20-9-20-20v-80c0-11 9-20 20-20h0V220z"/>
+                    <path class="flickity-illo__color5" fill="#C25" d="M40 220L40 220c-11 0-20-9-20-20v-80c0-11 9-20 20-20h0V220z"/>
+                  </svg>
+              </div>
+              <div class="showcase-item__text">
+                <h3 class="showcase-item__title">Flickity</h3>
+                <p class="showcase-item__description">Touch, responsive, flickable carousels</p>
+              </div>
+            </a>
+          </li>
+    
+    
+          <li class="showcase-item">
+            <a class="showcase-item__link" href="http://huebee.buzz">
+              <div class="showcase-item__image">
+                  <svg class="huebee-illo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 200 200" width="100" height="100">
+                    <polygon class="huebee-illo__stripe4" fill="#19F" points="100,170 65,135 135,135 "/>
+                    <rect class="huebee-illo__stripe3" fill="#EA0" x="65" y="110" width="70" height="25"/>
+                    <rect class="huebee-illo__stripe2" fill="#E62" x="65" y="85" width="70" height="25"/>
+                    <polygon class="huebee-illo__stripe1" fill="#C25" points="135,85 65,85 65,70 80,55 120,55 135,70 "/>
+                    <path class="huebee-illo__line" stroke="#333" fill="none" stroke-width="15" d="M140 90c0-22-18-40-39-40C78 50 60 68 60 91V110c0 14 5 27 15 37
+                      l25 25l25-25c10-10 15-23 15-37V90z"/>
+                    <path class="huebee-illo__line" stroke="#333" fill="none" stroke-width="15" d="M60 74v50c0 11-9 21-21 21h0c-18 0-27-22-15-35L60 74z"/>
+                    <path class="huebee-illo__line" stroke="#333" fill="none" stroke-width="15" d="M140 74v50c0 11 9 21 21 21h0c18 0 27-22 15-35L140 74z"/>
+                    <line class="huebee-illo__line huebee-illo__antenna" stroke="#333" fill="none" stroke-width="15" stroke-linecap="round" x1="60" y1="30" x2="80" y2="50"/>
+                    <line class="huebee-illo__line huebee-illo__antenna" stroke="#333" fill="none" stroke-width="15" stroke-linecap="round" x1="140" y1="30" x2="120" y2="50"/>
+                  </svg>
+              </div>
+              <div class="showcase-item__text">
+                <h3 class="showcase-item__title">Huebee</h3>
+                <p class="showcase-item__description">One-click color picker</p>
+              </div>
+            </a>
+          </li>
+    
+          <li class="showcase-item">
+            <a class="showcase-item__link" href="http://logo.pizza">
+              <div class="showcase-item__image">
+                  <svg class="logo-pizza-illo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 700 700" width="100" height="100">
+                    <path class="logo-pizza-illo__outline" fill="#C25" d="M513 91c-9-0-17 5-21 12l-80 160c-3 5-6 10-11 15l-47 47
+                      c-5 5-12-1-9-7l32-64c5-11-2-23-14-23h-0c-121 0-268 70-327 180
+                      C-9 497 35 609 196 609c138 0 279-85 327-180v0c5-11-2-23-14-23h-77c-13 0-19-15-10-24
+                      l81-81c5-5 11-8 18-8l0 0c13 0 19 15 10 24L494 354c-6 6-6 14 0 20c3 3 6 4 10 4
+                      c4 0 7-1 10-4l80-80h53c9 0 17-5 21-13C707 190 656 97 513 91z M334 281l-59 117
+                      c-2 5-7 8-13 8H97c-4 0-6-4-3-7c49-64 143-114 236-124C333 275 335 278 334 281z
+                       M70 441c2-4 6-7 10-7h168c4 0 7 4 5 8l-59 118c-2 4-6 6-11 6
+                      C106 565 38 521 70 441z M466 441c-49 64-143 114-236 124c-3 0-6-3-4-6l59-117
+                      c2-5 7-8 13-8h166C466 434 468 438 466 441z M446 318l-81 81c-5 5-11 8-18 8l0 0
+                      c-13 0-19-15-10-24l81-81c5-5 11-8 18-8l0 0C449 294 455 309 446 318z M447 258L506 139
+                      c2-4 6-7 11-6c101 7 140 60 114 126c-2 4-6 7-10 7H452C448 266 445 262 447 258z"/>
+                    <path class="logo-pizza-illo__slice" fill="#ED0" d="M334 281l-59 117c-2 5-7 8-13 8H97c-4 0-6-4-3-7
+                      c49-64 143-114 236-124C333 275 335 278 334 281z"/>
+                    <path class="logo-pizza-illo__slice" fill="#ED0" d="M70 441c2-4 6-7 10-7h168c4 0 7 4 5 8l-59 118c-2 4-6 6-11 6
+                      C106 565 38 521 70 441z"/>
+                    <path class="logo-pizza-illo__slice" fill="#ED0" d="M466 441c-49 64-143 114-236 124c-3 0-6-3-4-6l59-117
+                      c2-5 7-8 13-8h166C466 434 468 438 466 441z"/>
+                    <path class="logo-pizza-illo__slice" fill="#ED0" d="M447 258L506 139c2-4 6-7 11-6c101 7 140 60 114 126c-2 4-6 7-10 7H452
+                      C448 266 445 262 447 258z"/>
+                  </svg>
+              </div>
+              <div class="showcase-item__text">
+                <h3 class="showcase-item__title">Logo Pizza</h3>
+                <p class="showcase-item__description">Hot &amp; ready logos for sale</p>
+              </div>
+            </a>
+          </li>
+    
+      </ul> 
+    
+    </div>
+
+    <p class="site-footer__copy">
+      <a href="https://twitter.com/metafizzyco">
+        <svg class="twitter-logo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512" width="30" height="30">
+          <path d="M512 97c-19 8-39 14-60 16 22-13 38-34 46-58-20 12-43 21-67 25-19-19-46-32-77-32-58 0-117 52-102 129-87-4-165-46-216-110-24 40-19 107 32 140-17 0-33-5-48-13v1c0 51 36 93 84 103-15 4-34 5-47 2 13 42 52 72 98 73-47 36-96 49-155 44 46 30 102 47 161 47 197 0 306-168 299-312 20-15 38-34 52-55z"/>
+        </svg>
+        Follow @metafizzyco on Twitter for Packery updates
+      </a>
+    </p>
+
+    <div class="metafizzy-brand">
+      <a class="metafizzy-brand__link" href="http://metafizzy.co">
+        <svg class="metafizzy-logo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 780 1000" width="78" height="100">
+          <path class="metafizzy-logo__outline" fill="#333" d="M642 31c-49 0-85 29-102 51C528 55 490 2 415 2
+            c-76 0-134 59-137 135c-18 7-62 34-75 43c-20-10-42-16-65-16h0c-68 0-137 53-137 139
+            c0 78 67 133 128 135c11 19 26 42 44 69c1-1-74 46-74 46c-29 19-61 53-61 110
+            c0 75 62 128 129 128c24 0 48-7 68-20l16-10l-23 66C199 917 267 998 350 998
+            c54 0 104-35 122-87l7-20c19-2 37-8 55-18l92-57c25-16 45-39 54-68l46-131
+            c19-54 14-125 1-185c8-16 51-112 51-220C779 58 695 31 642 31z"/>
+          <clippath id="metafizzy-logo__body">
+            <path d="M566 164c-2-34 19-67 54-78c41-13 84 9 97 50c21 67 7 146-13 218
+              C688 310 631 222 566 164z M626 314C567 227 500 155 424 156c-14 0-25-13-25-27
+              c1-14 13-25 27-25c42 1 71 15 73 16l0 0C489 70 426 33 371 66c-36 22-50 65-36 103
+              c-37 11-108 52-132 75c-27-31-73-39-109-17c-41 25-53 78-29 118c20 32 58 47 93 39
+              c15 30 44 74 87 138l-119 74c-36 23-48 71-25 107c25 39 74 45 107 25
+              c23-14 61-38 61-38c-0-4-1-7-1-11c-2-14 7-27 21-30c14-2 27 7 30 21
+              c5 29 1 52-3 62c0 0-22 61-38 111c-18 55 24 103 72 103c30 0 62-17 74-52l60-174
+              c3-7 8-13 16-16c25-9 45-27 45-27c11-10 27-9 36 2c10 11 9 27-2 36
+              c-1 1-22 20-51 33l-29 84l0 0c3-1 5-3 8-4l92-57c15-9 27-24 33-41l46-131
+              C705 521 671 383 626 314z"/>
+          </clippath>
+          <g clip-path="url(#metafizzy-logo__body)">
+            <polygon class="metafizzy-logo__stripe4" fill="#19F" points="1016 544 278 1018 174 837 911 373"/>
+            <polygon class="metafizzy-logo__stripe3" fill="#EA0" points="822 435 174 843 85 695 822 232"/>
+            <polygon class="metafizzy-logo__stripe2" fill="#E62" points="822 238 85 701 74 469 717 65"/>
+            <polygon class="metafizzy-logo__stripe1" fill="#C25" points="717 70 -20 533 -20 299 612 -100"/>
+          </g>
+          <path class="metafizzy-logo__snout" fill="white" d="M474 373c-44 27-66 73-48 103c18 30 70 33 113 5
+            c48-31 66-73 48-103C570 347 519 345 474 373z"/>
+          <path class="metafizzy-logo__eyes-nose" fill="#333" d="M383 383c13 21-15 14-36 27s-28 41-40 20c-13-21-6-49 15-62
+            C343 355 370 362 383 383z M497 260c-21 13-28 41-15 62c13 21 19-7 40-20s49-6 36-27
+            S518 247 497 260z M467 416L467 416c4 6 11 10 18 9l22-2c6-1 12-4 15-9l12-19
+            c4-6 4-14 0-20v0c-6-9-18-12-27-7l-34 21C464 395 461 407 467 416z"/>
+        </svg>
+        <svg class="metafizzy-wordmark" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1000 300" width="100" height="30">
+          <path fill="#333" d="M491 121c3-9 13-39 13-39h-25c-1 2-2 5-3 8c-23-32-63 7-72 41
+            c-4 10-12 25-23 25c-13 0 0-35 6-56c0 0 0-0 0-0c4-12 11-36 11-36s18 0 24 0
+            c25 0 51 5 71-13l-14-15c-10 8-18 8-27 8c-13 0-48 0-48 0l7-23h-25l-7 23h-29l-6 21
+            h29c0 0-4 14-6 19c-7 22-11 49-30 64c-14 10-38 17-53 7c19-8 51-21 51-45
+            c0-13-8-29-28-29c-39 0-57 40-57 60c0 25 24 40 49 40c21 0 39-7 54-19c3 9 11 16 24 16
+            c13 0 23-5 30-14c7 10 19 16 33 14c11-2 19-7 26-14c4 8 11 14 25 15l6-21
+            C477 156 488 131 491 121z M277 132c3-10 13-33 29-29c5 1 6 7 4 12c-4 12-20 20-33 26
+            C276 138 276 135 277 132z M443 156c-9 3-14-2-15-11c-3-19 25-60 42-33c0 0-2 8-4 14
+            C463 138 454 152 443 156z M251 188l-15 19c-31-18-33-59-24-87c10-31 19-50 19-50
+            l-50 65l-23-0c-1-18-4-50-8-65c0 0-9 30-14 45c-13 44-37 119-97 109
+            c-18-3-33-16-36-34c-4-23 12-45 30-60l13 17c-14 11-29 33-13 50
+            c13 14 31 6 42-5c23-22 29-56 38-86C121 82 135 35 135 35c0 0 0-0 0-0c-0-0-1-1-1-1
+            C129 42 119 48 109 47c-11-1-17-11-14-21c3-10 14-18 25-18c15 0 23 1 34 12
+            c14 13 23 50 26 80l64-79l23-0l-29 94C231 138 226 174 251 188z M649 48
+            c-2 6-11 18-25 18c-14 0-20-11-17-21c3-8 9-14 17-16c-8-9-28-7-38 2
+            c-9 8-12 20-15 31c-2 7-7 21-7 21h65l-29 94h-25l23-73h-40c0 0-14 48-22 72
+            c-9 27-34 57-65 59L478 212c16-1 29-25 34-41c4-13 18-58 21-68c-6 0-13 0-19 0l6-21
+            c5 0 12 0 19 0c4-12 7-24 11-36c8-25 33-45 63-45C642 1 656 22 649 48z M727 82
+            h-82l-6 21h47l-62 56l-5 17c39 0 75 9 94-15l-16-14c-11 14-27 10-40 10L721 99L727 82z
+             M999 70c0 38-27 89-102 123c-2 6-4 12-6 18c-7 24-23 88-86 88c-22 0-41-12-41-36
+            c0-27 23-38 36-46c23-14 50-25 76-36c1-3 2-6 3-9c-4 2-9 3-13 3
+            c-14 1-28-4-35-15c-11 8-23 14-35 17c-22 5-57-0-79-0l5-18l61-55h-46l6-21h82
+            l-6 17l-64 58c11 0 22 0 33-1c14-1 31-10 41-26c3-5 16-50 16-50l24 0
+            c0 0-6 22-11 38c-4 13-8 35 8 35c12 0 23-13 26-23c3-10 15-50 15-50l25 0l-26 85
+            c72-42 76-101 64-115c-5 9-15 16-26 14c-11-1-17-11-14-21c3-10 14-18 25-18
+            C988 26 999 53 999 70z M867 206c-5 2-10 5-15 7c-14 7-31 13-48 25
+            c-10 7-23 19-15 32c6 11 24 9 34 5c13-6 26-19 32-32C860 232 864 219 867 206z"/>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+
+</footer>
+
+<!-- Packery does NOT require jQuery.
+  jQuery is only used for jQuery UI Draggable -->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
+
+  <script src="js/packery-docs.min.js"></script>
+
+
+</body>
+</html>

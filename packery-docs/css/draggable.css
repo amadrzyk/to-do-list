@@ -1,0 +1,157 @@
+/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */
+
+/* Hidden
+   ========================================================================== */
+
+
+/* duo
+two columns for large devices
+------------------------- */
+
+.duo:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.duo__cell {
+  margin-bottom: 10px;
+}
+
+/* --- duo--legal --- */
+
+@media screen and ( min-width: 768px ) {
+  .duo__cell {
+    float: left;
+    width: 48.5%;
+  }
+
+  .duo__cell:first-child {
+    margin-right: 3%;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* drag-hero-demos
+------------------------- */
+
+.drag-hero-demos__grid {
+  background: #EAEAEA;
+}
+
+.drag-hero-demos__item {
+  background: #C09;
+  float: left;
+  cursor: move;
+  line-height: 70px;
+  font-size: 1.3rem;
+  color: #F8F8F8;
+  text-align: center;
+  border: 4px solid transparent;
+}
+
+.drag-hero-demos__item:hover {
+  border-color: hsla(0, 0%, 100%, 0.5);
+  background: #C90;
+}
+
+/* ---- masonry ---- */
+
+.drag-hero-demos__item,.drag-hero-demos__grid__masonry-grid-sizer {
+  width: 32%;
+}
+
+.drag-hero-demos__item--masonry {
+  height: 80px;
+}
+
+.drag-hero-demos__grid__masonry-gutter-sizer {
+  width: 2%;
+}
+
+.drag-hero-demos__item--masonry.height2 {
+  height: 130px;
+}
+
+.drag-hero-demos__item--masonry.height3 {
+  height: 180px;
+}
+
+
+/* grid
+------------------------- */
+
+.grid {
+  background: #EAEAEA;
+  position: relative;
+}
+
+/* clearfix */
+
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* grid-item
+------------------------- */
+
+.grid-item {
+  float: left;
+  width: 60px;
+  height: 60px;
+  background: #C09;
+  border: 2px solid hsla(0, 0%, 0%, 0.4);
+}
+
+.grid-item--height2 {
+  height: 120px;
+}
+
+.grid-item--height3 {
+  height: 180px;
+}
+
+/* ---- grid--draggable ---- */
+
+.grid--draggable .grid-item {
+  width: 100px;
+  height: 100px;
+}
+
+.grid--draggable .grid-item--height2 {
+  height: 200px;
+}
+
+.grid--draggable .grid-item:hover {
+  border-color: hsla(0, 0%, 100%, 0.5);
+  cursor: move;
+}
+
+/* hero
+------------------------- */
+
+.hero {
+  background: #C09;
+  color: #F8F8F8;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---- grid ---- */
+
+.hero__grid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+
+.hero__grid__item {
+  background: hsla(0, 0%, 0%, 0.3);
+}
